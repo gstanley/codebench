@@ -1,5 +1,9 @@
 require "test/unit"
-require "./lib/artifacts/a0"
+require "find"
+require "./lib/artifact"
+Find.find("./lib/artifacts") do |file|
+  require file unless FileTest.directory?(file)
+end
 
 class TestArtifact < Test::Unit::TestCase
   test "get code" do
@@ -12,6 +16,10 @@ class TestArtifact < Test::Unit::TestCase
 
   test "generate code" do
     assert_equal "\"Hello...\"", A0.generate
+  end
+
+  test "generate code with <%= 23 %>" do
+    assert_equal "23", A1.generate
   end
 end
 

@@ -1,11 +1,11 @@
-class A0 < Artifact
+class A1 < Artifact
   class << self
     def name
-      "hello"
+      "gen 23"
     end
 
     def code
-      "\"Hello...\""
+      "<%= 23 %>"
     end
   end
 end
