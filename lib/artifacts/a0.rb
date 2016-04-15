@@ -7,6 +7,10 @@ class A0
     def code
       "\"Hello...\""
     end
+
+    def generate
+      code
+    end
   end
 end
 

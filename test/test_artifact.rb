@@ -9,5 +9,9 @@ class TestArtifact < Test::Unit::TestCase
   test "get name" do
     assert_equal "hello", A0.name
   end
+
+  test "generate code" do
+    assert_equal "\"Hello...\"", A0.generate
+  end
 end
 
