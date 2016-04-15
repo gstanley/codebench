@@ -1,6 +1,12 @@
 class A0
-  def self.code
-    "\"Hello...\""
+  class << self
+    def name
+      "hello"
+    end
+
+    def code
+      "\"Hello...\""
+    end
   end
 end
 
