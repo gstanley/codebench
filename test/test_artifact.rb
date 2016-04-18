@@ -23,7 +23,11 @@ class TestArtifact < Test::Unit::TestCase
   end
 
   test "execute code" do
-    assert_equal 23, A1.execute
+    assert_equal 23, A1.execute["res"]
+  end
+
+  test "execute with stdout" do
+    assert_equal "on console\n", A2.execute["out"]
   end
 end
 
