@@ -6,6 +6,10 @@ class Artifact
       b = binding
       ERB.new(code).result(b)
     end
+
+    def execute
+      eval generate
+    end
   end
 end
 

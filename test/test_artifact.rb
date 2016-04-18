@@ -21,5 +21,9 @@ class TestArtifact < Test::Unit::TestCase
   test "generate code with <%= 23 %>" do
     assert_equal "23", A1.generate
   end
+
+  test "execute code" do
+    assert_equal 23, A1.execute
+  end
 end
 
