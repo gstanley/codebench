@@ -29,5 +29,10 @@ class TestArtifact < Test::Unit::TestCase
   test "execute with stdout" do
     assert_equal "on console\n", A2.execute["out"]
   end
+
+  test "list" do
+    assert_equal [], A0.list
+    assert_equal ["a", "b", "c"], A3.list
+  end
 end
 

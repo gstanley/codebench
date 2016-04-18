@@ -30,6 +30,14 @@ class Artifact
       $stdout = orig_stdout
       $stderr = orig_stderr
     end
+
+    def code
+      ""
+    end
+
+    def list
+      []
+    end
   end
 end
 
