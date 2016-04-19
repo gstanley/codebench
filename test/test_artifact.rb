@@ -34,5 +34,15 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal [], A0.list
     assert_equal ["a", "b", "c"], A3.list
   end
+
+  test "short doc" do
+    assert_equal "Hello World", A0.doc
+    assert_equal "doc", A1.doc
+  end
+
+  test "long doc" do
+    assert_equal "artifact that outputs Hello...", A0.ldoc
+    assert_equal "long doc", A1.ldoc
+  end
 end
 

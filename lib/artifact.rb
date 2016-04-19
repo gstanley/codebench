@@ -38,6 +38,14 @@ class Artifact
     def list
       []
     end
+
+    def doc
+      "doc"
+    end
+
+    def ldoc
+      "long doc"
+    end
   end
 end
 
