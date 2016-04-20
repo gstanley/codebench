@@ -48,6 +48,9 @@ class TestArtifact < Test::Unit::TestCase
   test "location" do
     assert_equal "*history*", A0.file
     assert_equal 1, A0.line
+    assert_equal 1, A0.slot
+    assert_equal "", A1.file
+    assert_equal 0, A1.line
   end
 end
 

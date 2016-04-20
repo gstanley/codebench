@@ -46,6 +46,19 @@ class Artifact
     def ldoc
       "long doc"
     end
+
+    def file
+      ""
+    end
+
+    def line
+      0
+    end
+
+    # slot is stored as a line number (slots can be multiline)
+    def slot
+      line
+    end
   end
 end
 
