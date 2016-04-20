@@ -1,3 +1,5 @@
+require "./artifact"
+
 class A1 < Artifact
   class << self
     def name

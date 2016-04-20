@@ -1,4 +1,15 @@
 require "erb"
+require "find"
+require 'byebug'
+
+#byebug
+$artifacts = []
+Find.find(File.dirname(__FILE__) + "/artifacts") do |file|
+puts file
+  next if FileTest.directory?(file)
+  require file
+  $artifacts << eval(File.basename(file, ".rb").capitalize)
+end
 
 class Artifact
   class << self
@@ -58,6 +69,15 @@ class Artifact
     # slot is stored as a line number (slots can be multiline)
     def slot
       line
+    end
+  end
+end
+
+class Art
+  class << self
+    def get_by_name( name )
+byebug
+      $artifacts.find {|art| art.name == name}
     end
   end
 end

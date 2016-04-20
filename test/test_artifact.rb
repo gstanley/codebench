@@ -1,9 +1,5 @@
 require "test/unit"
-require "find"
 require "./lib/artifact"
-Find.find("./lib/artifacts") do |file|
-  require file unless FileTest.directory?(file)
-end
 
 class TestArtifact < Test::Unit::TestCase
   test "get code" do
@@ -51,6 +47,10 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal 1, A0.slot
     assert_equal "", A1.file
     assert_equal 0, A1.line
+  end
+
+  test "get artifact by name" do
+    assert_equal A0, Art.get_by_name( "hello" )
   end
 end
 
