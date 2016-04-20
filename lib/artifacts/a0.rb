@@ -15,6 +15,14 @@ class A0 < Artifact
     def ldoc
       "artifact that outputs Hello..."
     end
+
+    def file
+      "*history*"
+    end
+
+    def line
+      1
+    end
   end
 end
 

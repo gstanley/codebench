@@ -44,5 +44,10 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal "artifact that outputs Hello...", A0.ldoc
     assert_equal "long doc", A1.ldoc
   end
+
+  test "location" do
+    assert_equal "*history*", A0.file
+    assert_equal 1, A0.line
+  end
 end
 
