@@ -1,4 +1,4 @@
-require "./artifact"
+require "./lib/artifact"
 
 class A2 < Artifact
   class << self

@@ -1,15 +1,5 @@
 require "erb"
 require "find"
-require 'byebug'
-
-#byebug
-$artifacts = []
-Find.find(File.dirname(__FILE__) + "/artifacts") do |file|
-puts file
-  next if FileTest.directory?(file)
-  require file
-  $artifacts << eval(File.basename(file, ".rb").capitalize)
-end
 
 class Artifact
   class << self
@@ -76,9 +66,15 @@ end
 class Art
   class << self
     def get_by_name( name )
-byebug
       $artifacts.find {|art| art.name == name}
     end
   end
+end
+
+$artifacts = []
+Find.find(File.dirname(__FILE__) + "/artifacts") do |file|
+  next if FileTest.directory?(file)
+  require file
+  $artifacts << eval(File.basename(file, ".rb").capitalize)
 end
 
