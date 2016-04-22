@@ -68,6 +68,9 @@ class Art
     def get_by_name( name )
       $artifacts.find {|art| art.name == name}
     end
+
+    def get_by_path( path )
+    end
   end
 end
 

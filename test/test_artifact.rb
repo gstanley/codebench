@@ -52,5 +52,9 @@ class TestArtifact < Test::Unit::TestCase
   test "get artifact by name" do
     assert_equal A0, Art.get_by_name( "hello" )
   end
+
+  test "get artifact by path" do
+    assert_equal A4, Art.get_by_path( "/" )
+  end
 end
 
