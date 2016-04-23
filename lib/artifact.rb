@@ -1,5 +1,11 @@
 require "erb"
 require "find"
+case RUBY_PLATFORM
+when /cygwin|mswin|mingw|bccwin|wince|emx/
+  require "stringio"
+when /darwin/
+else
+end
 
 class Artifact
   class << self
