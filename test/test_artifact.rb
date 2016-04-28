@@ -2,6 +2,10 @@ require "test/unit"
 require "./lib/artifact"
 
 class TestArtifact < Test::Unit::TestCase
+  setup do
+    Art.set_current( "/a/b" )
+  end
+
   test "get code" do
     assert_equal "\"Hello...\"", A0.code
   end
@@ -68,9 +72,14 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal [:current, "b"], Art.parse_path( "b" )
   end
 
-  test "get artifact by path" do
+  test "get artifact by absolute path" do
     assert_equal A4, Art.get_by_path( "/" )
     assert_equal A7, Art.get_by_path( "/a/b/c" )
+  end
+
+  test "get artifact by relative path" do
+    Art.set_current( "/a/b" )
+    assert_equal A7, Art.get_by_path( "c" )
   end
 end
 

@@ -75,6 +75,8 @@ end
 
 class Art
   class << self
+    @current = "/"
+
     def get_by_name( name )
       $artifacts.find {|art| art.name == name}
     end
@@ -84,8 +86,13 @@ class Art
     end
 
     def get_by_path( path )
-      current = get_root
-      parse_path( path )[1..-1].each do |name|
+      parsed_path = parse_path( path )
+      if parsed_path[0] == :root
+        current = get_root
+      else
+        current = get_by_path( @current )
+      end
+      parsed_path[1..-1].each do |name|
         current = get_child( current, name )
       end
       current
@@ -103,6 +110,10 @@ class Art
         header = :current
       end
       [header] + path.split("/")
+    end
+
+    def set_current( path )
+      @current = path[0] == "/" ? path : "#@current/#{path}"
     end
   end
 end
