@@ -9,6 +9,10 @@ class A1 < Artifact
     def code
       "<%= 23 %>"
     end
+
+    def parent
+      A4
+    end
   end
 end
 

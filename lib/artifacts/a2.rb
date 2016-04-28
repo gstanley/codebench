@@ -9,6 +9,10 @@ class A2 < Artifact
     def code
       "puts \"on console\""
     end
+
+    def parent
+      A4
+    end
   end
 end
 

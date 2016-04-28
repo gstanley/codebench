@@ -66,6 +66,10 @@ class Artifact
     def slot
       line
     end
+
+    def parent
+      nil
+    end
   end
 end
 
@@ -76,6 +80,7 @@ class Art
     end
 
     def get_by_path( path )
+      $artifacts.find {|art| art.parent.nil?}
     end
   end
 end

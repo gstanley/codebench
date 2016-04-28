@@ -9,6 +9,10 @@ class A3 < Artifact
     def list
       ["a", "b", "c"]
     end
+
+    def parent
+      A4
+    end
   end
 end
 

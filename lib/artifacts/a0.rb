@@ -25,6 +25,10 @@ class A0 < Artifact
     def line
       1
     end
+
+    def parent
+      A4
+    end
   end
 end
 
