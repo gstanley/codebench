@@ -86,6 +86,10 @@ class Art
     def get_by_path( path )
       get_root
     end
+
+    def get_child( parent, name )
+      $artifacts.find {|art| art.parent == parent && art.name == name}
+    end
   end
 end
 
