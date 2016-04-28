@@ -84,7 +84,11 @@ class Art
     end
 
     def get_by_path( path )
-      get_root
+      current = get_root
+      parse_path( path )[1..-1].each do |name|
+        current = get_child( current, name )
+      end
+      current
     end
 
     def get_child( parent, name )
