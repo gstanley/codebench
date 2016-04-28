@@ -79,8 +79,12 @@ class Art
       $artifacts.find {|art| art.name == name}
     end
 
-    def get_by_path( path )
+    def get_root
       $artifacts.find {|art| art.parent.nil?}
+    end
+
+    def get_by_path( path )
+      get_root
     end
   end
 end

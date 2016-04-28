@@ -53,8 +53,18 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal A0, Art.get_by_name( "hello" )
   end
 
+  test "get root artifact" do
+    assert_equal A4, Art.get_root
+  end
+
+  test "get child artifact by name and parent" do
+    assert_equal A5, Art.get_child( A4, "a" )
+    assert_equal A7, Art.get_child( A6, "c" )
+  end
+
   test "get artifact by path" do
     assert_equal A4, Art.get_by_path( "/" )
+    assert_equal A7, Art.get_by_path( "/a/b/c" )
   end
 end
 
