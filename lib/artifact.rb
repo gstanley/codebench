@@ -90,6 +90,16 @@ class Art
     def get_child( parent, name )
       $artifacts.find {|art| art.parent == parent && art.name == name}
     end
+
+    def parse_path( path )
+      if path[0] == "/"
+        header = :root
+        path = path[1..-1]
+      else
+        header = :current
+      end
+      [header] + path.split("/")
+    end
   end
 end
 

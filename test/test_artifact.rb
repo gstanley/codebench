@@ -62,6 +62,12 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal A7, Art.get_child( A6, "c" )
   end
 
+  test "parse path" do
+    assert_equal [:root, "a", "b", "c"], Art.parse_path( "/a/b/c" )
+    assert_equal [:root, "a", "b", "c"], Art.parse_path( "/a/b/c/" )
+    assert_equal [:current, "b"], Art.parse_path( "b" )
+  end
+
   test "get artifact by path" do
     assert_equal A4, Art.get_by_path( "/" )
     assert_equal A7, Art.get_by_path( "/a/b/c" )
