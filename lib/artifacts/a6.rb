@@ -9,6 +9,10 @@ class A6 < Artifact
     def parent
       A5
     end
+
+    def line
+      1
+    end
   end
 end
 

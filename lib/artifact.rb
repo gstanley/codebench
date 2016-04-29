@@ -67,6 +67,11 @@ class Artifact
       line
     end
 
+    # index is stored as a line number (can be breaks)
+    def index
+      line
+    end
+
     def parent
       nil
     end
@@ -87,7 +92,7 @@ class Art
 
     def get_by_path( path )
       parsed_path = parse_path( path )
-      if parsed_path[0] == :root
+      if parsed_path[0][:type] == :root
         current = get_root
       else
         current = get_by_path( @current )
@@ -98,18 +103,38 @@ class Art
       current
     end
 
-    def get_child( parent, name )
-      $artifacts.find {|art| art.parent == parent && art.name == name}
+    def get_child( parent, ident )
+      if ident[:type] == :index
+        $artifacts.find {|art| art.parent == parent && art.index == ident[:value]}
+      else
+        $artifacts.find {|art| art.parent == parent && art.name == ident[:value]}
+      end
     end
 
     def parse_path( path )
       if path[0] == "/"
-        header = :root
+        header = {type: :root}
         path = path[1..-1]
       else
-        header = :current
+        header = {type: :current}
       end
-      [header] + path.split("/")
+      result = [header]
+      next_elem = {type: :name}
+      path.split(/([#\/])/).each do |elem|
+        case elem
+        when "/"
+          next_elem[:type] = :name
+        when "#"
+          next_elem[:type] = :index
+        when ""
+          # nothing
+        else
+          next_elem[:value] = next_elem[:type] == :name ? elem : elem.to_i
+          result << next_elem
+          next_elem = {}
+        end
+      end
+      result
     end
 
     def set_current( path )

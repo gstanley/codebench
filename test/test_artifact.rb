@@ -1,5 +1,6 @@
 require "test/unit"
 require "./lib/artifact"
+require "byebug"
 
 class TestArtifact < Test::Unit::TestCase
   setup do
@@ -62,14 +63,14 @@ class TestArtifact < Test::Unit::TestCase
   end
 
   test "get child artifact by name and parent" do
-    assert_equal A5, Art.get_child( A4, "a" )
-    assert_equal A7, Art.get_child( A6, "c" )
+    assert_equal A5, Art.get_child( A4, {type: :name, value: "a"} )
+    assert_equal A7, Art.get_child( A6, {type: :name, value: "c"} )
   end
 
   test "parse path" do
-    assert_equal [:root, "a", "b", "c"], Art.parse_path( "/a/b/c" )
-    assert_equal [:root, "a", "b", "c"], Art.parse_path( "/a/b/c/" )
-    assert_equal [:current, "b"], Art.parse_path( "b" )
+    assert_equal [{type: :root}, {type: :name, value: "a"}, {type: :name, value: "b"}, {type: :name, value: "c"}], Art.parse_path( "/a/b/c" )
+    assert_equal [{type: :root}, {type: :name, value: "a"}, {type: :name, value: "b"}, {type: :name, value: "c"}], Art.parse_path( "/a/b/c/" )
+    assert_equal [{type: :current}, {type: :name, value: "b"}], Art.parse_path( "b" )
   end
 
   test "get artifact by absolute path" do
@@ -80,6 +81,11 @@ class TestArtifact < Test::Unit::TestCase
   test "get artifact by relative path" do
     Art.set_current( "/a/b" )
     assert_equal A7, Art.get_by_path( "c" )
+  end
+
+  test "get artifact by path with index" do
+    assert_equal A0, Art.get_by_path( "/#1" )
+    assert_equal A7, Art.get_by_path( "/a#1/c" )
   end
 end
 
