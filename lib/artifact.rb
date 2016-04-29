@@ -151,7 +151,7 @@ class Art
 
     def get_file_contents( parent )
       line_ctr = 1
-      $artifacts.select {|art| art.parent == parent}.inject( [] ) do |memo, art|
+      $artifacts.select {|art| art.parent == parent}.sort_by {|art| art.line}.inject( [] ) do |memo, art|
         while line_ctr < art.line
           memo << ""
           line_ctr += 1

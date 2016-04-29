@@ -90,7 +90,7 @@ class TestArtifact < Test::Unit::TestCase
 
   test "list artifact children" do
     assert_equal ["b"], A5.list_children
-    assert_equal ["hello", "gen 23", "art a2", "art a3", "a", "test.txt", "test2.txt"], A4.list_children
+    assert_equal ["hello", "gen 23", "art a2", "art a3", "a", "test.txt", "test2.txt", "test3.txt"], A4.list_children
   end
 
   test "get file artifact" do
@@ -100,9 +100,9 @@ class TestArtifact < Test::Unit::TestCase
   test "get file contents" do
     assert_equal ["abc"], Art.get_file_contents( A8 )
     assert_equal ["abc", "def", "", "after break"], Art.get_file_contents( A10 )
+    assert_equal ["1", "2"], Art.get_file_contents( A13 )
   end
 
-# out of order lines
 # parse file path
 # - parse relative file path
 # set current from file path
