@@ -144,6 +144,10 @@ class Art
     def set_current( path )
       @current = path[0] == "/" ? path : "#@current/#{path}"
     end
+
+    def get_file( parent, name )
+      $artifacts.find {|art| art.parent == parent && art.name == name && art.type == "file"}
+    end
   end
 end
 

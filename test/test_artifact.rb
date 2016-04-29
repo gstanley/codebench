@@ -90,7 +90,16 @@ class TestArtifact < Test::Unit::TestCase
 
   test "list artifact children" do
     assert_equal ["b"], A5.list_children
-    assert_equal ["hello", "gen 23", "art a2", "art a3", "a"], A4.list_children
+    assert_equal ["hello", "gen 23", "art a2", "art a3", "a", "test.txt"], A4.list_children
   end
+
+  test "get file artifact" do
+    assert_equal A8, Art.get_file( A4, "test.txt" )
+  end
+
+# show file contents
+# parse file path
+# - parse relative file path
+# set current from file path
 end
 
