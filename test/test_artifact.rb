@@ -87,5 +87,10 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal A0, Art.get_by_path( "/#1" )
     assert_equal A7, Art.get_by_path( "/a#1/c" )
   end
+
+  test "list artifact children" do
+    assert_equal ["b"], A5.list_children
+    assert_equal ["hello", "gen 23", "art a2", "art a3", "a"], A4.list_children
+  end
 end
 

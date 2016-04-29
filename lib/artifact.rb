@@ -75,6 +75,10 @@ class Artifact
     def parent
       nil
     end
+
+    def list_children
+      $artifacts.select {|art| art.parent == self}.map {|art| art.name}
+    end
   end
 end
 
