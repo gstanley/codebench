@@ -68,7 +68,7 @@ class TestArtifact < Test::Unit::TestCase
   end
 
   test "parse path" do
-    assert_equal [{type: :root}, {type: :name, value: "a"}, {type: :name, value: "b"}, {type: :name, value: "c"}], Art.parse_path( "/a/b/c" )
+    assert_equal [{type: :root}], Art.parse_path( "/" )
     assert_equal [{type: :root}, {type: :name, value: "a"}, {type: :name, value: "b"}, {type: :name, value: "c"}], Art.parse_path( "/a/b/c/" )
     assert_equal [{type: :current}, {type: :name, value: "b"}], Art.parse_path( "b" )
   end
@@ -101,6 +101,13 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal ["abc"], Art.get_file_contents( A8 )
     assert_equal ["abc", "def", "", "after break"], Art.get_file_contents( A10 )
     assert_equal ["1", "2"], Art.get_file_contents( A13 )
+  end
+
+  test "parse file path" do
+    Art.set_current_file_path( "/doc" )
+    assert_equal [:root], Art.parse_file_path( "/" )
+    assert_equal [:root, "doc", "test.txt"], Art.parse_file_path( "/doc/test.txt" )
+    assert_equal [:current], Art.parse_file_path( "test2.txt" )
   end
 
 # parse file path
