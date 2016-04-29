@@ -148,6 +148,21 @@ class Art
     def get_file( parent, name )
       $artifacts.find {|art| art.parent == parent && art.name == name && art.type == "file"}
     end
+
+    def get_file_contents( parent )
+      line_ctr = 1
+      $artifacts.select {|art| art.parent == parent}.inject( [] ) do |memo, art|
+        while line_ctr < art.line
+          memo << ""
+          line_ctr += 1
+        end
+        art.code.each_line do |line|
+          memo << line.strip
+          line_ctr += 1
+        end
+        memo
+      end
+    end
   end
 end
 
@@ -157,4 +172,5 @@ Find.find(File.dirname(__FILE__) + "/artifacts") do |file|
   require file
   $artifacts << eval(File.basename(file, ".rb").capitalize)
 end
+$artifacts.sort! {|x, y| x.to_s[1..-1].to_i <=> y.to_s[1..-1].to_i}
 
