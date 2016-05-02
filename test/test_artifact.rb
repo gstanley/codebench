@@ -102,16 +102,5 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal ["abc", "def", "", "after break"], Art.get_file_contents( A10 )
     assert_equal ["1", "2"], Art.get_file_contents( A13 )
   end
-
-  test "parse file path" do
-    Art.set_current_file_path( "/doc" )
-    assert_equal [:root], Art.parse_file_path( "/" )
-    assert_equal [:root, "doc", "test.txt"], Art.parse_file_path( "/doc/test.txt" )
-    assert_equal [:current], Art.parse_file_path( "test2.txt" )
-  end
-
-# parse file path
-# - parse relative file path
-# set current from file path
 end
 

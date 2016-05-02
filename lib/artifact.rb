@@ -85,8 +85,6 @@ end
 class Art
   class << self
     @current = "/"
-    @current_file_path = "/"
-    @fs_root = nil
 
     def get_by_name( name )
       $artifacts.find {|art| art.name == name}
@@ -179,4 +177,4 @@ Find.find(File.dirname(__FILE__) + "/artifacts") do |file|
   $artifacts << eval(File.basename(file, ".rb").capitalize)
 end
 $artifacts.sort! {|x, y| x.to_s[1..-1].to_i <=> y.to_s[1..-1].to_i}
-Art.fs_root = A
+
