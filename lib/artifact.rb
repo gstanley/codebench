@@ -1,5 +1,6 @@
 require "erb"
 require "find"
+require "./lib/orch"
 case RUBY_PLATFORM
 when /cygwin|mswin|mingw|bccwin|wince|emx/
   require "stringio"
