@@ -18,9 +18,14 @@ class TestOrch < Test::Unit::TestCase
     assert_equal "text line", orch.gen
   end
 
+  test "" do
+    orch = Orch.new( A16 )
+    assert_equal EText, orch.lang
+  end
+
   test "execute text" do
     orch = Orch.new( A16 )
-#    assert_equal "text line", orch.exec
+    assert_equal "text line", orch.exec
   end
 end
 
