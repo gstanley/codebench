@@ -7,6 +7,7 @@ when /cygwin|mswin|mingw|bccwin|wince|emx/
 when /darwin/
 else
 end
+require "byebug"
 
 class Artifact
   class << self
@@ -175,7 +176,20 @@ $artifacts = []
 Find.find(File.dirname(__FILE__) + "/artifacts") do |file|
   next if FileTest.directory?(file)
   require file
-  $artifacts << eval(File.basename(file, ".rb").capitalize)
+  class_name = case file
+  when /a([0-9]*).rb/
+    "A#$1"
+  when /([a-z]*)_context.rb/
+    "#{$1.capitalize}Context"
+  end
+  $artifacts << eval(class_name)
 end
-$artifacts.sort! {|x, y| x.to_s[1..-1].to_i <=> y.to_s[1..-1].to_i}
+$artifacts.sort! do |x, y|
+  if x.to_s =~ /A[\d]*/ && y.to_s =~ /A[\d]*/
+    x.to_s[1..-1].to_i <=> y.to_s[1..-1].to_i
+  else
+    x.to_s <=> y.to_s
+  end
+end
+puts $artifacts
 

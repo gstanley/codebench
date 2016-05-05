@@ -90,7 +90,7 @@ class TestArtifact < Test::Unit::TestCase
 
   test "list artifact children" do
     assert_equal ["b"], A5.list_children
-    assert_equal ["hello", "gen 23", "art a2", "art a3", "a", "test.txt", "test2.txt", "test3.txt", "text artifact"], A4.list_children
+    assert_equal ["hello", "gen 23", "art a2", "art a3", "a", "test.txt", "test2.txt", "test3.txt", "text artifact", "exec contexts"], A4.list_children
   end
 
   test "get file artifact" do
@@ -104,8 +104,12 @@ class TestArtifact < Test::Unit::TestCase
   end
 
   test "execute a text artifact" do
-byebug
     assert_equal "text line\n", A16.execute
+  end
+
+  test "get text execution context" do
+byebug
+    assert_equal TextContext, Art.get_by_path( "/exec contexts/text" )
   end
 end
 
