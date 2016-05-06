@@ -1,12 +1,14 @@
 require "./lib/artifact"
 
 class A4 < Artifact
-  def name
-    "root"
-  end
+  class << self
+    def name
+      "root"
+    end
 
-  def line
-    1
+    def line
+      1
+    end
   end
 end
 

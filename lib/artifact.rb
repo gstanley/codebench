@@ -10,75 +10,77 @@ end
 require "byebug"
 
 class Artifact
-  def generate
-    b = binding
-    ERB.new(code).result(b)
-  end
-
-  def execute
-    b = binding
-    out, err, result = capture do
-      eval(generate, b)
+  class << self
+    def generate
+      b = binding
+      ERB.new(code).result(b)
     end
-    {"out" => out, "err" => err, "res" => result}
-  end
-
-  def capture
-    orig_stdout = $stdout.dup
-    orig_stderr = $stderr.dup
-    captured_stdout = StringIO.new
-    captured_stderr = StringIO.new
-    $stdout = captured_stdout
-    $stderr = captured_stderr
-    result = yield
-    captured_stdout.rewind
-    captured_stderr.rewind
-    return captured_stdout.string, captured_stderr.string, result
-  ensure
-    $stdout = orig_stdout
-    $stderr = orig_stderr
-  end
-
-  def code
-    ""
-  end
-
-  def list
-    []
-  end
-
-  def doc
-    "doc"
-  end
-
-  def ldoc
-    "long doc"
-  end
-
-  def file
-    ""
-  end
-
-  def line
-    0
-  end
-
-  # slot is stored as a line number (slots can be multiline)
-  def slot
-    line
-  end
-
-  # index is stored as a line number (can be breaks)
-  def index
-    line
-  end
-
-  def parent
-    nil
-  end
-
-  def list_children
-    $artifacts.select {|art| art.parent == self}.map {|art| art.name}
+  
+    def execute
+      b = binding
+      out, err, result = capture do
+        eval(generate, b)
+      end
+      {"out" => out, "err" => err, "res" => result}
+    end
+  
+    def capture
+      orig_stdout = $stdout.dup
+      orig_stderr = $stderr.dup
+      captured_stdout = StringIO.new
+      captured_stderr = StringIO.new
+      $stdout = captured_stdout
+      $stderr = captured_stderr
+      result = yield
+      captured_stdout.rewind
+      captured_stderr.rewind
+      return captured_stdout.string, captured_stderr.string, result
+    ensure
+      $stdout = orig_stdout
+      $stderr = orig_stderr
+    end
+  
+    def code
+      ""
+    end
+  
+    def list
+      []
+    end
+  
+    def doc
+      "doc"
+    end
+  
+    def ldoc
+      "long doc"
+    end
+  
+    def file
+      ""
+    end
+  
+    def line
+      0
+    end
+  
+    # slot is stored as a line number (slots can be multiline)
+    def slot
+      line
+    end
+  
+    # index is stored as a line number (can be breaks)
+    def index
+      line
+    end
+  
+    def parent
+      nil
+    end
+  
+    def list_children
+      $artifacts.select {|art| art.parent == self}.map {|art| art.name}
+    end
   end
 end
 
@@ -91,7 +93,7 @@ class Art
     end
 
     def get_root
-      ($artifacts.find {|art| art.parent.nil?}).new
+      ($artifacts.find {|art| art.parent.nil?})
     end
 
     def get_by_path( path )
@@ -112,7 +114,7 @@ class Art
         $artifacts.find {|art| art.parent == parent && art.index == ident[:value]}
       else
         $artifacts.find {|art| art.parent == parent && art.name == ident[:value]}
-      end.new
+      end
     end
 
     def parse_path( path )
