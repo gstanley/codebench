@@ -2,16 +2,12 @@ require "test/unit"
 require "./test/test_helper"
 
 class TestTextContext < Test::Unit::TestCase
-  setup do
-    @context = TextContext.new
-  end
-
 #  test "get code" do
 #    assert_equal "\"Hello...\"", @context.code
 #  end
 
   test "get name" do
-    assert_equal "text", @context.name
+    assert_equal "text", TextContext.name
   end
 
 #  test "generate code" do
