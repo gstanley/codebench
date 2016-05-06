@@ -1,3 +1,5 @@
+require "./test/test_helper"
+
 class TextContext < Artifact
   class << self
     def name

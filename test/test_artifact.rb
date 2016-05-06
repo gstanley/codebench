@@ -1,5 +1,5 @@
 require "test/unit"
-require "./lib/artifact"
+require "./test/test_helper"
 require "byebug"
 
 # paths:
@@ -125,7 +125,7 @@ class TestArtifact < Test::Unit::TestCase
   end
 
   test "execute a text artifact" do
-    assert_equal "text line\n", Art.get_by_path( "/text artifact" ).execute
+    assert_equal "text line", Art.get_by_path( "/text artifact" ).execute
   end
 
   test "get text execution context" do

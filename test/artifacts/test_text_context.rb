@@ -1,5 +1,5 @@
 require "test/unit"
-require "./lib/artifacts/text_context"
+require "./test/test_helper"
 
 class TestTextContext < Test::Unit::TestCase
   setup do
