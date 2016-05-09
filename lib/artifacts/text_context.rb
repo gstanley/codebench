@@ -17,6 +17,10 @@ class TextContext < Artifact
     def code
       "text line"
     end
+
+    def tasks
+      ["generate", "execute"]
+    end
   end
 end
 

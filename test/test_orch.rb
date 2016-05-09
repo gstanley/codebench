@@ -22,5 +22,10 @@ class TestOrch < Test::Unit::TestCase
     orch = Orch.new( A16 )
     assert_equal "text line", orch.exec
   end
+
+  test "tasks" do
+    orch = Orch.new( A16 )
+    assert_equal ["generate", "execute"], orch.tasks
+  end
 end
 
