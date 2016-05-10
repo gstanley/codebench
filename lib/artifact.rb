@@ -81,6 +81,10 @@ class Artifact
     def list_children
       $artifacts.select {|art| art.parent == self}.map {|art| art.name}
     end
+
+    def context
+      {"name" => "ruby"}
+    end
   end
 end
 

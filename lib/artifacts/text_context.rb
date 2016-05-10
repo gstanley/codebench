@@ -10,16 +10,25 @@ class TextContext < Artifact
       A17
     end
   
-    def lang
-      "text"
-    end
-  
     def code
       "text line"
     end
 
     def tasks
       ["generate", "execute"]
+    end
+
+    def generate_code
+      <<EOC
+b = binding
+ERB.new(@artifact.code).result(b)
+EOC
+    end
+
+    def execute_code
+      <<EOC
+@gen_results
+EOC
     end
   end
 end
