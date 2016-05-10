@@ -5,12 +5,7 @@ class Orch
 
   def initialize( art )
     @artifact = art
-    @context = case art.lang
-    when "text"
-      TextContext
-    when "ruby"
-      RubyContext
-    end
+    @context = eval("#{art.context["name"].capitalize}Context")
     @tasks = @context.tasks
   end
 

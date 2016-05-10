@@ -10,8 +10,8 @@ class A16 < Artifact
       A4
     end
   
-    def lang
-      "text"
+    def context
+      {"name" => "text"}
     end
   
     def code
