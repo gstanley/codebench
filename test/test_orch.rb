@@ -15,12 +15,15 @@ class TestOrch < Test::Unit::TestCase
 # execute script/executable using execution command artifact
   test "generate text" do
     orch = Orch.new( A16 )
-    assert_equal "text line", orch.gen
+    orch.generate
+    assert_equal "text line", orch.gen_results
   end
 
   test "execute text" do
     orch = Orch.new( A16 )
-    assert_equal "text line", orch.exec
+    orch.generate
+    orch.execute
+    assert_equal "text line", orch.exec_results
   end
 
   test "tasks" do

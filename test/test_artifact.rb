@@ -124,10 +124,6 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal ["1", "2"], Art.get_file_contents( Art.get_by_path( "/test3.txt" ) )
   end
 
-  test "execute a text artifact" do
-    assert_equal "text line", Art.get_by_path( "/text artifact" ).execute
-  end
-
   test "get text execution context" do
     assert_equal TextContext, Art.get_by_path( "/exec contexts/text" )
   end
