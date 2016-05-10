@@ -19,5 +19,11 @@ class Orch
   def execute
     @exec_results = eval @context_params["execute_code"]
   end
+
+  def execute_tasks
+    @context_params["tasks"].each do |task|
+      send(task.to_sym)
+    end
+  end
 end
 
