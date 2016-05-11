@@ -5,6 +5,10 @@ class A11 < Artifact
     def parent
       A10
     end
+
+    def name
+      "line1"
+    end
   
     def line
       1
