@@ -1,6 +1,4 @@
-require "./test/test_helper"
-
-class TextContext < Artifact
+class RubyContext < Artifact
   class << self
     def name
       "ruby"
@@ -27,7 +25,11 @@ EOC
 
     def execute_code
       <<EOC
-@gen_results
+b = binding
+out, err, result = capture do
+  eval(@gen_results, b)
+end
+{"res" => result, "out" => out, "err" => err}
 EOC
     end
   end

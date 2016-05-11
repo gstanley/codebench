@@ -1,5 +1,3 @@
-require "./test/test_helper"
-
 class TextContext < Artifact
   class << self
     def name
@@ -27,7 +25,7 @@ EOC
 
     def execute_code
       <<EOC
-@gen_results
+{"res" => @gen_results}
 EOC
     end
   end

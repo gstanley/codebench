@@ -36,22 +36,6 @@ class TestArtifact < Test::Unit::TestCase
     assert_equal "hello", Art.get_by_path( "/hello" ).name
   end
 
-  test "generate code" do
-    assert_equal "\"Hello...\"", Art.get_by_path( "/hello" ).generate
-  end
-
-  test "generate code with <%= 23 %>" do
-    assert_equal "23", Art.get_by_path( "/gen 23" ).generate
-  end
-
-  test "execute code" do
-    assert_equal 23, Art.get_by_path( "/gen 23" ).execute["res"]
-  end
-
-  test "execute with stdout" do
-    assert_equal "on console\n", Art.get_by_path( "/art a2" ).execute["out"]
-  end
-
   test "list" do
     assert_equal [], Art.get_by_path( "/hello" ).list
     assert_equal ["a", "b", "c"], Art.get_by_path( "/art a3" ).list
