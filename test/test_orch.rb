@@ -45,5 +45,14 @@ class TestOrch < Test::Unit::TestCase
     orch.execute_tasks
     assert_equal "on console\n", orch.exec_results["out"]
   end
+
+  test "execute system command" do
+    orch = Orch.new( Art.get_by_path( "/system command - ruby" ) )
+    orch.execute_tasks
+    assert_equal "hello\n", orch.exec_results["out"]
+    orch = Orch.new( Art.get_by_path( "/system command - pwd" ) )
+    orch.execute_tasks
+    assert_match /codebench/, orch.exec_results["out"]
+  end
 end
 

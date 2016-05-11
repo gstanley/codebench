@@ -95,7 +95,7 @@ class TestArtifact < Test::Unit::TestCase
 
   test "list artifact children" do
     assert_equal ["b"], Art.get_by_path( "/a" ).list_children
-    assert_equal ["hello", "gen 23", "art a2", "art a3", "a", "test.txt", "test2.txt", "test3.txt", "text artifact", "exec contexts"], Art.get_by_path( "/" ).list_children
+    assert_equal ["hello", "gen 23", "art a2", "art a3", "a", "test.txt", "test2.txt", "test3.txt", "text artifact", "exec contexts", "system command - ruby", "system command - pwd"], Art.get_by_path( "/" ).list_children
   end
 
   test "get file artifact" do
