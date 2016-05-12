@@ -21,20 +21,25 @@ class LispContext < Artifact
     def generate_code
       <<EOC
 b = binding
-ERB.new(@artifact.code).result(b)
+[{
+  "file" => "prog.lisp",
+  "content" => ERB.new(@artifact.code).result(b)
+}]
 EOC
     end
 
     def execute_code
       <<EOC
 out = err = ""
-Open4.popen4(@gen_results) do |pid, stdin, stdout, stderr|
+Open4.popen4("clisp #{WORK}/prog.lisp") do |pid, stdin, stdout, stderr|
   out = stdout.read
   err = stderr.read
 end
 { "out" => out, "err" => err }
 EOC
     end
+
+    def 
   end
 end
 

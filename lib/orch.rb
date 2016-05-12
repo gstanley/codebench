@@ -1,6 +1,7 @@
 require "./lib/artifact"
 
 class Orch
+  WORK = "~/work"
   attr_reader :tasks, :gen_results, :exec_results
 
   def initialize( art )
