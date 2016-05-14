@@ -3,7 +3,7 @@ require "open4"
 class LispContext < Artifact
   class << self
     def name
-      "shell"
+      "lisp"
     end
   
     def parent
@@ -14,32 +14,22 @@ class LispContext < Artifact
       "pwd"
     end
 
-    def tasks
-      ["generate", "execute"]
+    def structure
+      { "main" => { "name" => "prog.lisp" } }
     end
 
-    def generate_code
+    def executor
+      "clisp <%= WORK %>/prog.lisp"
+    end
+
+    def main_body
       <<EOC
-b = binding
-[{
-  "file" => "prog.lisp",
-  "content" => ERB.new(@artifact.code).result(b)
-}]
+(let ((result
+  <%= @generated_code %>
+))
+(format t "---~%res: ~s" result))
 EOC
     end
-
-    def execute_code
-      <<EOC
-out = err = ""
-Open4.popen4("clisp #{WORK}/prog.lisp") do |pid, stdin, stdout, stderr|
-  out = stdout.read
-  err = stderr.read
-end
-{ "out" => out, "err" => err }
-EOC
-    end
-
-    def 
   end
 end
 

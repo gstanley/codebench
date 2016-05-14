@@ -12,26 +12,34 @@ class RubyContext < Artifact
       "1 + 1"
     end
 
-    def tasks
-      ["generate", "execute"]
+    def structure
+      {}
     end
 
-    def generate_code
-      <<EOC
-b = binding
-ERB.new(@artifact.code).result(b)
-EOC
+    def executor
+      "<ruby process>"
     end
 
-    def execute_code
-      <<EOC
-b = binding
-out, err, result = capture do
-  eval(@gen_results, b)
-end
-{"res" => result, "out" => out, "err" => err}
-EOC
+    def main_body
+      "<%= @generated_code %>"
     end
+
+#    def generate_code
+#      <<EOC
+#b = binding
+#ERB.new(@artifact.code).result(b)
+#EOC
+#    end
+
+#    def execute_code
+#      <<EOC
+#b = binding
+#out, err, result = capture do
+#  eval(@gen_results, b)
+#end
+#{"res" => result, "out" => out, "err" => err}
+#EOC
+#    end
   end
 end
 
