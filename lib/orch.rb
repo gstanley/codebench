@@ -2,7 +2,7 @@ require "yaml"
 require "./lib/artifact"
 
 class Orch
-  attr_reader :tasks, :gen_results, :exec_results
+  attr_reader :generated_code, :exec_results
   WORK = "~/work"
 
   def initialize( art )
@@ -12,6 +12,7 @@ class Orch
     @context_params["executor"] ||= context.executor
     @context_params["main-body"] ||= context.main_body
     @context_params["structure"] ||= context.structure
+    @context_params["name"] ||= context.name
 #    @context_params["generate_code"] ||= context.generate_code
 #    @context_params["execute_code"] ||= context.execute_code
 #    @context_params["tasks"] ||= context.tasks
@@ -24,6 +25,8 @@ class Orch
         eval(@generated_code, b)
       end
       {"res" => result, "out" => out, "err" => err}
+    elsif @context_params["executor"] == "<text process>"
+      {"res" => @generated_code}
     else
       out = err = ""
       Open4.popen4(@generated_command) do |pid, stdin, stdout, stderr|
@@ -79,10 +82,10 @@ class Orch
   #   (format t "---~%res: ~s" result)
   def formatter_outputter
     b = binding
-    if @context_params["executor"] == "<ruby process>"
-      name_entry = nil
-    else
+    if @context_params["structure"]
       name_entry = @context_params["structure"]["main"]["name"]
+    else
+      name_entry = nil
     end
     @files = [{
       "name" => name_entry,
@@ -100,7 +103,7 @@ class Orch
   end
   # parse output
   def parse_results
-    if @context_params["executor"] != "<ruby process>"
+    if !["ruby", "shell", "text"].include?(@context_params["name"])
       @exec_results = YAML.load(@exec_results["out"])
     end
   end

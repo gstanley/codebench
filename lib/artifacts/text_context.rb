@@ -12,21 +12,16 @@ class TextContext < Artifact
       "text line"
     end
 
-    def tasks
-      ["generate", "execute"]
+    def structure
+      nil
     end
 
-    def generate_code
-      <<EOC
-b = binding
-ERB.new(@artifact.code).result(b)
-EOC
+    def executor
+      "<text process>"
     end
 
-    def execute_code
-      <<EOC
-{"res" => @gen_results}
-EOC
+    def main_body
+      "<%= @generated_code %>"
     end
   end
 end

@@ -15,11 +15,11 @@ class TestOrch < Test::Unit::TestCase
 # execute script/executable using execution command artifact
   test "generate text" do
     orch = Orch.new( Art.get_by_path( "/text artifact" ) )
-    orch.generate
-    assert_equal "text line", orch.gen_results
+    orch.generate_source
+    assert_equal "text line", orch.generated_code
     orch = Orch.new( Art.get_by_path( "/hello" ) )
-    orch.generate
-    assert_equal "\"Hello...\"", orch.gen_results
+    orch.generate_source
+    assert_equal "\"Hello...\"", orch.generated_code
   end
 
   test "execute text" do
