@@ -17,7 +17,7 @@ class ElispContext < Artifact
     end
 
     def executor
-      "emacs -batch <%= WORK %>/prog.lisp"
+      "emacsclient -e \"(load-file \\\"<%= WORK %>/prog.lisp\\\")\""
     end
 
     def main_body
@@ -25,7 +25,7 @@ class ElispContext < Artifact
 (let ((result
   <%= @generated_code %>
 ))
-(format t "---~%res: ~s" result))
+(format "---\nres: %s" result))
 EOC
     end
   end
