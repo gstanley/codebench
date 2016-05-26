@@ -1,4 +1,15 @@
 require "yaml"
+$platform = case RUBY_PLATFORM
+when /cygwin|mswin|mingw|bccwin|wince|emx/
+  require "win32/open3"
+  :windows
+when /darwin/
+  :mac
+else
+  require "open4"
+  :linux
+end
+
 require "./lib/artifact"
 
 class Orch
@@ -29,9 +40,17 @@ class Orch
       {"res" => @generated_code}
     else
       out = err = ""
-      Open4.popen4(@generated_command) do |pid, stdin, stdout, stderr|
-        out = stdout.read
-        err = stderr.read
+      case $platform
+      when :linux
+        Open4.popen4(@generated_command) do |pid, stdin, stdout, stderr|
+          out = stdout.read
+          err = stderr.read
+        end
+      when :windows
+        Open3.popen3(@generated_command) do |stdin, stdout, stderr|
+          out = stdout.read
+          err = stderr.read
+        end
       end
       { "out" => out, "err" => err }
     end

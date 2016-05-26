@@ -1,5 +1,3 @@
-require "open4"
-
 class LispContext < Artifact
   class << self
     def name

@@ -47,6 +47,7 @@ class TestOrch < Test::Unit::TestCase
   end
 
   test "execute system command" do
+byebug
     orch = Orch.new( Art.get_by_path( "/system command - ruby" ) )
     orch.execute_tasks
     assert_equal "hello\n", orch.exec_results["out"]
