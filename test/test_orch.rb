@@ -47,13 +47,14 @@ class TestOrch < Test::Unit::TestCase
   end
 
   test "execute system command" do
-byebug
     orch = Orch.new( Art.get_by_path( "/system command - ruby" ) )
     orch.execute_tasks
     assert_equal "hello\n", orch.exec_results["out"]
-    orch = Orch.new( Art.get_by_path( "/system command - pwd" ) )
-    orch.execute_tasks
-    assert_match /codebench/, orch.exec_results["out"]
+    if $platform != :windows
+      orch = Orch.new( Art.get_by_path( "/system command - pwd" ) )
+      orch.execute_tasks
+      assert_match /codebench/, orch.exec_results["out"]
+    end
   end
 
   test "execute lisp" do
@@ -63,7 +64,6 @@ byebug
   end
 
   test "execute elisp" do
-byebug
     orch = Orch.new( Art.get_by_path( "/elisp evaluation" ) )
     orch.execute_tasks
     assert_equal 6, orch.exec_results["res"]
