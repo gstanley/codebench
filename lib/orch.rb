@@ -122,8 +122,11 @@ class Orch
   end
   # parse output
   def parse_results
-    if !["ruby", "shell", "text"].include?(@context_params["name"])
+    if !["ruby", "shell", "text", "elisp"].include?(@context_params["name"])
       @exec_results = YAML.load(@exec_results["out"])
+    elsif @context_params["name"] == "elisp"
+      # use first as stdout
+      @exec_results["res"] = eval(@exec_results["out"].split("\n")[1])
     end
   end
   # exec source
