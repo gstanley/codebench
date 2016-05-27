@@ -68,5 +68,11 @@ class TestOrch < Test::Unit::TestCase
     orch.execute_tasks
     assert_equal 6, orch.exec_results["res"]
   end
+
+  test "execute racket" do
+    orch = Orch.new( Art.get_by_path( "/racket evaluation" ) )
+    orch.execute_tasks
+    assert_equal 6, orch.exec_results["res"]
+  end
 end
 
