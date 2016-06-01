@@ -22,10 +22,10 @@ class ClojureContext < Artifact
 
     def main_body
       <<EOC
-(let ((result
+(let [result
   <%= @generated_code %>
-))
-(format t "---~%res: ~s" result))
+]
+(clojure.pprint/cl-format "---~%res: ~s" result))
 EOC
     end
   end
