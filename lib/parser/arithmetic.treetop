@@ -1,0 +1,6 @@
+grammar Arithmetic
+  rule number
+    '0'
+  end
+end
+
