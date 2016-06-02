@@ -1,16 +1,8 @@
 grammar ParenLanguage
   rule nested_parens
-    '(' nested_parens ')' {
-      def depth
-        nested_parens.depth + 1
-      end
-    }
+    '(' nested_parens ')' <ParenNode>
     /
-    [a-z] {
-      def depth
-        0
-      end
-    }
+    [a-z] <ParenNode>
   end
 end
 
