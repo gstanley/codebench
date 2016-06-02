@@ -1,0 +1,6 @@
+grammar ParenLanguage
+  rule nested_parens
+    '(' nested_parens ')' / [a-z]
+  end
+end
+

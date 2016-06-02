@@ -76,7 +76,6 @@ class TestOrch < Test::Unit::TestCase
   end
 
   test "execute clojure" do
-byebug
     orch = Orch.new( Art.get_by_path( "/clojure evaluation" ) )
     orch.execute_tasks
     assert_equal 6, orch.exec_results["res"]
