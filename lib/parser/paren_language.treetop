@@ -1,6 +1,16 @@
 grammar ParenLanguage
   rule nested_parens
-    '(' nested_parens ')' / [a-z]
+    '(' nested_parens ')' {
+      def depth
+        nested_parens.depth + 1
+      end
+    }
+    /
+    [a-z] {
+      def depth
+        0
+      end
+    }
   end
 end
 
