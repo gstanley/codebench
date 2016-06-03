@@ -14,5 +14,9 @@ class ArithmeticGrammarTest < Test::Unit::TestCase
     assert_equal 0, parse("0").eval
     assert_equal 123, parse("123").eval
   end
+
+  test "parse variables" do
+    assert_equal 2, parse("x").eval({'x' => 2})
+  end
 end
 

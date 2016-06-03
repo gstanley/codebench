@@ -1,8 +1,27 @@
 grammar Arithmetic
+  # primary is the top level expression so far, allows both rules to be used
+  rule primary
+    variable / number
+  end
+
+  rule variable
+    [a-z]+ {
+      # env is an environment that holds values the eval function can use
+      def eval(env)
+        env[name]
+      end
+
+      # name creates an index into the env
+      def name
+        text_value
+      end
+    }
+  end
+
   rule number
     # parens are necessary because {} would bind to '0' instead of the whole choice expression
-    # text_value: value of matched input
     ([1-9] [0-9]* / '0') {
+      # text_value: value of matched input
       def eval
         text_value.to_i
       end
