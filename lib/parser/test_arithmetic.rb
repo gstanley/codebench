@@ -9,8 +9,8 @@ class ArithmeticGrammarTest < Test::Unit::TestCase
   end
 
   test "parse numbers" do
-    assert @parser.parse("0")
-    assert @parser.parse("123")
+    assert_equal 0, @parser.parse("0").eval
+    assert_equal 123, @parser.parse("123").eval
   end
 end
 

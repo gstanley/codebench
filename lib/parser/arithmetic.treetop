@@ -1,6 +1,12 @@
 grammar Arithmetic
   rule number
-    [1-9] [0-9]* / '0'
+    # parens are necessary because {} would bind to '0' instead of the whole choice expression
+    # text_value: value of matched input
+    ([1-9] [0-9]* / '0') {
+      def eval
+        text_value.to_i
+      end
+    }
   end
 end
 
