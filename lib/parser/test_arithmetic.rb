@@ -18,5 +18,9 @@ class ArithmeticGrammarTest < Test::Unit::TestCase
   test "parse variables" do
     assert_equal 2, parse("x").eval({'x' => 2})
   end
+
+  test "parse multiplicative expressions" do
+    assert_equal 20, parse("x * 10").eval({'x' => 2})
+  end
 end
 
