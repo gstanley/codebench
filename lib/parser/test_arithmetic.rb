@@ -10,6 +10,7 @@ class ArithmeticGrammarTest < Test::Unit::TestCase
 
   test "parse numbers" do
     assert @parser.parse("0")
+    assert @parser.parse("123")
   end
 end
 
