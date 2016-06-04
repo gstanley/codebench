@@ -1,7 +1,8 @@
 grammar Arithmetic
   rule multiplicative
     # the operands are labels to address the 2 primaries
-    operand_1:primary space '*' space operand_2:primary {
+    # add a recursive multiplicative to handle arbitrary length expressions
+    operand_1:primary space '*' space operand_2:multiplicative {
       def eval(env)
         operand_1.eval(env) * operand_2.eval(env)
       end
