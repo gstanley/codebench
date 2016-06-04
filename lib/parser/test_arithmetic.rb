@@ -27,5 +27,9 @@ class ArithmeticGrammarTest < Test::Unit::TestCase
   test "parse additive expressions" do
     assert_equal 5 + 2 * 10 - 5, parse("5 + x * 10 - y").eval({'x' => 2, 'y' => 5})
   end
+
+  test "parse parenthetical expressions" do
+    assert_equal (5 + 2) * (10 - 5), parse("(5 + 2) * (10 - 5)").eval({'x' => 2, 'y' => 5})
+  end
 end
 

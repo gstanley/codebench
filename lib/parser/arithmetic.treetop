@@ -46,7 +46,16 @@ grammar Arithmetic
 
   # primary is the top level expression so far, allows both rules to be used
   rule primary
-    variable / number
+    variable
+    /
+    number
+    /
+    # parentheses only effect the order of evaluation; they don't change the semantics
+    '(' space additive space ')' {
+      def eval(env)
+        additive.eval(env)
+      end
+    }
   end
 
   rule variable
