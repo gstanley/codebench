@@ -1,4 +1,32 @@
 grammar Arithmetic
+  rule additive
+    # because additive "contains" multiplicative expressions, order of operations is built into the parser (* is before +)
+    operand_1:multiplicative space additive_op space operand_2:additive {
+      def eval(env)
+        # dynamically use whichever apply function is bound to that operator
+        additive_op.apply(operand_1.eval(env), operand_2.eval(env))
+      end
+    }
+    /
+    # base case
+    multiplicative
+  end
+
+  rule additive_op
+    '+' {
+      def apply(a, b)
+        a + b
+      end
+    }
+    /
+    '-' {
+      def apply(a, b)
+        a - b
+      end
+    }
+
+  end
+
   rule multiplicative
     # the operands are labels to address the 2 primaries
     # add a recursive multiplicative to handle arbitrary length expressions

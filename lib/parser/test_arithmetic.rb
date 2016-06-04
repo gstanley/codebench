@@ -23,5 +23,9 @@ class ArithmeticGrammarTest < Test::Unit::TestCase
     assert_equal 20, parse("x * 10").eval({'x' => 2})
     assert_equal 4 * 3 * 2, parse("4 * 3 * 2 * 1").eval({})
   end
+
+  test "parse additive expressions" do
+    assert_equal 5 + 2 * 10 - 5, parse("5 + x * 10 - y").eval({'x' => 2, 'y' => 5})
+  end
 end
 
