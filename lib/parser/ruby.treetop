@@ -1,0 +1,14 @@
+grammar Ruby
+  rule expression
+    object '.' method
+  end
+
+  rule object
+    '1'
+  end
+
+  rule method
+    'class'
+  end
+end
+
