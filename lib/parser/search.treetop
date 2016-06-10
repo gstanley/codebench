@@ -16,7 +16,7 @@ grammar Search
         elements.each do |element|
           if element.match?
             matches << {
-              :location => element.offset,
+              :location => element.interval,
               :value => element.tree
             }
             current_non_match = nil
@@ -26,7 +26,7 @@ grammar Search
               non_matches[-1] = current_non_match
             else
               current_non_match = {
-                :location => element.offset,
+                :location => element.interval,
                 :value => element.text_value
               }
               non_matches << current_non_match
@@ -43,10 +43,6 @@ grammar Search
     expression {
       def match?
         true
-      end
-
-      def offset
-        expression.offset
       end
     }
     /
