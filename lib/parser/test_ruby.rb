@@ -11,6 +11,8 @@ class RubyGrammarTest < Test::Unit::TestCase
   end
 
   test "parse expression" do
-    assert parse("1.class")
+    result = parse("1.class").tree
+    assert_equal "1", result[:expression][:object]
+    assert_equal "class", result[:expression][:method_name]
   end
 end

@@ -1,0 +1,60 @@
+# ignore non-matching text before and after (1 char at a time?)
+# embed any Parser
+# find 0 or more matches
+# give location of matches, unmatched text, matched text
+
+grammar Search
+  include Ruby
+
+  rule matches
+    match_or_char* {
+      def collect
+        matches = []
+        non_matches = []
+        current_non_match = nil
+
+        elements.each do |element|
+          if element.match?
+            matches << {
+              :location => element.offset,
+              :value => element.tree
+            }
+            current_non_match = nil
+          else
+            if current_non_match
+              current_non_match[:value] += element.text_value
+              non_matches[-1] = current_non_match
+            else
+              current_non_match = {
+                :location => element.offset,
+                :value => element.text_value
+              }
+              non_matches << current_non_match
+            end
+          end
+        end
+
+        [matches, non_matches]
+      end
+    }
+  end
+
+  rule match_or_char
+    expression {
+      def match?
+        true
+      end
+
+      def offset
+        expression.offset
+      end
+    }
+    /
+    . {
+      def match?
+        false
+      end
+    }
+  end
+end
+

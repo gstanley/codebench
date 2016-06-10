@@ -1,6 +1,13 @@
 grammar Ruby
   rule expression
-    object '.' method
+    object '.' method {
+      def tree
+        { :expression => {
+          :object => object.text_value,
+          :method_name => method.text_value }
+        }
+      end
+    }
   end
 
   rule object
