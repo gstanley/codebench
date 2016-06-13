@@ -16,7 +16,7 @@ grammar Search
         elements.each do |element|
           if element.match?
             matches << {
-              :location => element.interval,
+              :location => element.interval.first,
               :value => element.tree
             }
             current_non_match = nil
@@ -26,7 +26,7 @@ grammar Search
               non_matches[-1] = current_non_match
             else
               current_non_match = {
-                :location => element.interval,
+                :location => element.interval.first,
                 :value => element.text_value
               }
               non_matches << current_non_match
