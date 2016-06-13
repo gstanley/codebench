@@ -1,7 +1,9 @@
-# embed any Parser usage
+# embed any parser usage
+#   parser must implement tree
+#
 #   require 'treetop'
 #   Treetop.load '<language parser>'
-#   Language = <language>
+#   Language = <language grammar>
 #   Treetop.load 'search'
 #   parser = SearchParser.new
 
