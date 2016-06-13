@@ -1,10 +1,12 @@
-# ignore non-matching text before and after (1 char at a time?)
-# embed any Parser
-# find 0 or more matches
-# give location of matches, unmatched text, matched text
+# embed any Parser usage
+#   require 'treetop'
+#   Treetop.load '<language parser>'
+#   Language = <language>
+#   Treetop.load 'search'
+#   parser = SearchParser.new
 
 grammar Search
-  include Ruby
+  include Language
 
   rule matches
     match_or_char* {
