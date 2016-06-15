@@ -1,11 +1,13 @@
+require 'ostruct'
+
 grammar Ruby
   rule method_call
     primary_value call_op operation2 {
       def tree
-        { :method_call => {
-          :primary_value => primary_value.text_value,
-          :operation2 => operation2.text_value }
-        }
+        OpenStruct.new({ :method_call => OpenStruct.new({
+          :primary_value => OpenStruct.new(:text => primary_value.text_value),
+          :operation2 => OpenStruct.new(:text => operation2.text_value) })
+        })
       end
     }
   end
