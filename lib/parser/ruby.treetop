@@ -4,20 +4,33 @@ grammar Ruby
   rule method_call
     primary_value call_op operation2 {
       def tree
-        OpenStruct.new({ :method_call => OpenStruct.new({
-          :primary_value => OpenStruct.new(:text => primary_value.text_value),
-          :operation2 => OpenStruct.new(:text => operation2.text_value) })
+        OpenStruct.new({
+          :text => text_value,
+          :primary_value => primary_value.tree,
+          :operation2 => operation2.tree
         })
       end
     }
   end
 
   rule primary_value
-    '1'
+    '1' {
+      def tree
+        OpenStruct.new({
+          :text => text_value
+        })
+      end
+    }
   end
 
   rule operation2
-    'class'
+    'class' {
+      def tree
+        OpenStruct.new({
+          :text => text_value
+        })
+      end
+    }
   end
 
   rule call_op
