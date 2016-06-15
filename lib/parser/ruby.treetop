@@ -1,21 +1,25 @@
 grammar Ruby
-  rule expression
-    object '.' method {
+  rule method_call
+    primary_value call_op operation2 {
       def tree
-        { :expression => {
-          :object => object.text_value,
-          :method_name => method.text_value }
+        { :method_call => {
+          :primary_value => primary_value.text_value,
+          :operation2 => operation2.text_value }
         }
       end
     }
   end
 
-  rule object
+  rule primary_value
     '1'
   end
 
-  rule method
+  rule operation2
     'class'
+  end
+
+  rule call_op
+    '.'
   end
 end
 
