@@ -13,8 +13,52 @@ grammar Ruby
     }
   end
 
+  rule primary
+    literal '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value,
+          :literal => literal.tree
+        })
+      end
+    }
+  end
+
   rule primary_value
-    '1' {
+    primary '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value,
+          :primary => primary.tree
+        })
+      end
+    }
+  end
+
+  rule literal
+    numeric '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value,
+          :numeric => numeric.tree
+        })
+      end
+    }
+  end
+
+  rule numeric
+    simple_numeric '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value,
+          :simple_numeric => simple_numeric.tree
+        })
+      end
+    }
+  end
+
+  rule simple_numeric
+    '1' '' {
       def tree
         OpenStruct.new({
           :text => text_value
@@ -24,7 +68,7 @@ grammar Ruby
   end
 
   rule operation2
-    'class' {
+    'class' '' {
       def tree
         OpenStruct.new({
           :text => text_value

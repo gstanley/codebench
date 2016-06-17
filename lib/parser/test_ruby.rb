@@ -12,13 +12,13 @@ class RubyGrammarTest < Test::Unit::TestCase
 
   test "parse expression" do
     method_call = parse("1.class").tree
-    assert_equal "1", method_call.primary_value.text
+    assert_equal "1", method_call.primary_value.primary.literal.numeric.simple_numeric.text
     assert_equal "class", method_call.operation2.text
   end
 
   test "parse expression with comment and float" do
     method_call = parse("0.0.class # => Float: floating-point numbers have class Float").tree
-    assert_equal "0.0", method_call.primary_value.text
+    assert_equal "0.0", method_call.primary_value.primary.literal.numeric.simple_numeric.text
     assert_equal "class", method_call.operation2.text
     assert_equal " => Float: floating-point numbers have class Float", method_call.comment.text
   end
