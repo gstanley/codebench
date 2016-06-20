@@ -1,21 +1,84 @@
+require 'ostruct'
+
 grammar Ruby
-  rule expression
-    object '.' method {
+  rule method_call
+    primary_value call_op operation2 {
       def tree
-        { :expression => {
-          :object => object.text_value,
-          :method_name => method.text_value }
-        }
+        OpenStruct.new({
+          :text => text_value,
+          :primary_value => primary_value.tree,
+          :operation2 => operation2.tree
+        })
       end
     }
   end
 
-  rule object
-    '1'
+  rule primary
+    literal '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value,
+          :literal => literal.tree
+        })
+      end
+    }
   end
 
-  rule method
-    'class'
+  rule primary_value
+    primary '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value,
+          :primary => primary.tree
+        })
+      end
+    }
+  end
+
+  rule literal
+    numeric '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value,
+          :numeric => numeric.tree
+        })
+      end
+    }
+  end
+
+  rule numeric
+    simple_numeric '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value,
+          :simple_numeric => simple_numeric.tree
+        })
+      end
+    }
+  end
+
+  rule simple_numeric
+    '1' '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value
+        })
+      end
+    }
+  end
+
+  rule operation2
+    'class' '' {
+      def tree
+        OpenStruct.new({
+          :text => text_value
+        })
+      end
+    }
+  end
+
+  rule call_op
+    '.'
   end
 end
 
