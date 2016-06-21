@@ -30,6 +30,10 @@ class MGlobalVar
   def self.load(*args)
   end
 
+  def self.load_ident(obj)
+    obj
+  end
+
   def method_missing(*args, &block)
   end
 
@@ -38,4 +42,6 @@ class MGlobalVar
 end
 
 # debugger utilities
-
+# - get new wrapped object
+# - undo on wrapped object
+# -   and original object?
