@@ -1,6 +1,6 @@
 * program <= ?
 | line | lex_state |
-|  950 |           |
+|  950 | EXPR_BEG  |
 ** top_compstmt <= ?
 *** top_stmts opt_terms <= ?
 **** none opt_terms <= ?
@@ -9,3 +9,171 @@
 **** top_stmt opt_terms <= ?
 **** top_stmts terms top_stmt opt_terms <= ?
 **** error top_stmt opt_terms <= ?
+* top_compstmt <= ?
+| line | lex_state |
+|  950 | EXPR_BEG  |
+** top_stmts opt_terms <= ?
+* top_stmts
+** none
+** top_stmt
+** top_stmts terms top_stmt
+** error top_stmt
+* top_stmt
+** stmt
+** keyword_BEGIN '{' top_compstmt '}'
+* stmt
+** keyword_alias fitem fitem
+** keyword_alias tGVAR tGVAR
+** keyword_alias tGVAR tBACK_REF
+** keyword_alias tGVAR tNTH_REF
+** keyword_undef undef_list
+** stmt modifier_if expr_value
+** stmt modifier_unless expr_value
+** stmt modifier_while expr_value
+** stmt modifier_until expr_value
+** stmt modifier_rescue stmt
+** keyword_END '{' top_compstmt '}'
+** command_asgn
+** mlhs '=' command_call
+** var_lhs tOP_ASGN command_call
+** primary_value '[' opt_call_args rbracket tOP_ASGN command_call
+** primary_value call_op tIDENTIFIER tOP_ASGN command_call
+** primary_value call_op tCONSTANT tOP_ASGN command_call
+** primary_value tCOLON2 tCONSTANT tOP_ASGN command_call
+** primary_value tCOLON2 tIDENTIFIER tOP_ASGN command_call
+** backref tOP_ASGN command_call
+** lhs '=' mrhs
+** mlhs '=' mrhs_arg
+** expr
+* command_asgn
+** lhs '=' command_call
+** lhs '=' command_asgn
+* expr
+** command_call
+** expr keyword_and expr
+** expr keyword_or expr
+** keyword_not opt_nl expr
+** '!' command_call
+** arg
+* expr_value
+** expr
+* command_call
+** command
+** block_command
+* mlhs
+** mlhs_basic
+** tLPAREN mlhs_inner rparen
+* lhs
+** user_variable
+** keyword_variable
+** primary_value '[' opt_call_args rbracket
+** primary_value call_op tIDENTIFIER
+** primary_value tCOLON2 tIDENTIFIER
+** primary_value call_op tCONSTANT
+** primary_value tCOLON2 tCONSTANT
+** tCOLON3 tCONSTANT
+** backref
+* fitem
+** fsym
+** dsym
+* undef_list
+** fitem
+** undef_list ',' fitem
+* arg
+** lhs '=' arg
+** lhs '=' arg modifier_rescue arg
+** var_lhs tOP_ASGN arg
+** var_lhs tOP_ASGN arg modifier_rescue arg
+** primary_value '[' opt_call_args rbracket tOP_ASGN arg
+** primary_value call_op tIDENTIFIER tOP_ASGN arg
+** primary_value call_op tCONSTANT tOP_ASGN arg
+** primary_value tCOLON2 tIDENTIFIER tOP_ASGN arg
+** primary_value tCOLON2 tCONSTANT tOP_ASGN arg
+** tCOLON3 tCONSTANT tOP_ASGN arg
+** backref tOP_ASGN arg
+** arg tDOT2 arg
+** arg tDOT3 arg
+** arg '+' arg
+** arg '-' arg
+** arg '*' arg
+** arg '/' arg
+** arg '%' arg
+** arg tPOW arg
+** tUMINUS_NUM simple_numeric tPOW arg
+** tUPLUS arg
+** tUMINUS arg
+* opt_call_args
+** none
+** call_args
+** args ','
+** args ',' assocs ','
+** assocs ','
+* mrhs_arg
+** mrhs
+** arg_value
+* mrhs
+** arg ',' arg_value
+** arg ',' tSTAR arg_value
+** tSTAR arg_value
+* primary_value
+** primary
+* var_lhs
+** user_variable
+** keyword_variable
+* backref
+** tNTH_REF
+** tBACK_REF
+* call_op
+** '.'
+** tANDDOT
+* opt_terms
+** <none>
+** terms
+* opt_nl
+** <none>
+** '\n'
+* rbracket
+** opt_nl ']'
+* terms
+** term
+** terms ';'
+* none
+** <none>
+* keyword_undef
+** 'undef'
+* keyword_and
+** 'and'
+* keyword_or
+** 'or'
+* keyword_not
+** 'not'
+* modifier_if
+** 'if'
+* modifier_unless
+** 'unless'
+* modifier_while
+** 'while'
+* modifier_until
+** 'until'
+* modifier_rescue
+** 'rescue'
+* keyword_alias
+** 'alias'
+* keyword_BEGIN
+** 'BEGIN'
+* keyword_END
+** 'END'
+* tIDENTIFIER
+** ?
+* tGVAR
+** ?
+* tCONSTANT
+** ?
+* tNTH_REF
+** ?
+* tBACK_REF
+** ?
+* tOP_ASGN
+** ?
+* tCOLON2
+** '::'
