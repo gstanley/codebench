@@ -21,6 +21,16 @@
 * top_stmt
 ** stmt
 ** keyword_BEGIN '{' top_compstmt '}'
+* compstmt
+** stmts opt_terms
+* stmts
+** none
+** stmt_or_begin
+** stmts terms stmt_or_begin
+** error stmt
+* stmt_or_begin
+** stmt
+** keyword_BEGIN '{' top_compstmt '}'
 * stmt
 ** keyword_alias fitem fitem
 ** keyword_alias tGVAR tGVAR
@@ -60,9 +70,61 @@
 * command_call
 ** command
 ** block_command
+* block_command
+** block_call
+** block_call call_op2 operation2 command_args
+* cmd_brace_block
+** tLBRACE_ARG opt_block_param compstmt '}'
+* fcall
+** operation
+* command
+** fcall command_args %prec tLOWEST
+** fcall command_args cmd_brace_block
+** primary_value call_op operation2 command_args %prec tLOWEST
+** primary_value call_op operation2 command_args cmd_brace_block
+** primary_value tCOLON2 operation2 command_args %prec tLOWEST
+** primary_value tCOLON2 operation2 command_args cmd_brace_block
+** keyword_super command_args
+** keyword_yield command_args
+** keyword_return call_args
+** keyword_break call_args
+** keyword_next call_args
 * mlhs
 ** mlhs_basic
 ** tLPAREN mlhs_inner rparen
+* mlhs_inner
+** mlhs_basic
+** tLPAREN mlhs_inner rparen
+* mlhs_basic
+** mlhs_head
+** mlhs_head mlhs_item
+** mlhs_head tSTAR mlhs_node
+** mlhs_head tSTAR mlhs_node ',' mlhs_post
+** mlhs_head tSTAR
+** mlhs_head tSTAR ',' mlhs_post
+** tSTAR mlhs_node
+** tSTAR mlhs_node ',' mlhs_post
+** tSTAR
+** tSTAR ',' mlhs_post
+* mlhs_item
+** mlhs_node
+** tLPAREN mlhs_inner rparen
+* mlhs_head
+** mlhs_item ','
+** mlhs_head mlhs_item ','
+* mlhs_post
+** mlhs_item
+** mlhs_post ',' mlhs_item
+* mlhs_node
+** user_variable
+** keyword_variable
+** primary_value '[' opt_call_args rbracket
+** primary_value call_op tIDENTIFIER
+** primary_value tCOLON2 tIDENTIFIER
+** primary_value call_op tCONSTANT
+** primary_value tCOLON2 tCONSTANT
+** tCOLON2 tCONSTANT
+** backref
 * lhs
 ** user_variable
 ** keyword_variable
@@ -73,12 +135,94 @@
 ** primary_value tCOLON2 tCONSTANT
 ** tCOLON3 tCONSTANT
 ** backref
+* fname
+** tIDENTIFIER
+** tCONSTANT
+** tFID
+** op
+** reswords
+* fsym
+** fname
+** symbol
 * fitem
 ** fsym
 ** dsym
 * undef_list
 ** fitem
 ** undef_list ',' fitem
+* op
+** '|'
+** '^'
+** '&'
+** tCMP
+** tEQ
+** tEQQ
+** tMATCH
+** tNMATCH
+** '>'
+** tGEQ
+** '<'
+** tLEQ
+** tNEQ
+** tLSHFT
+** tRSHFT
+** '+'
+** '-'
+** '*'
+** tSTAR
+** '/'
+** '%'
+** tPOW
+** tDSTAR
+** '!'
+** '~'
+** tUPLUS
+** tUMINUS
+** tAREF
+** tASET
+** '`'
+* reswords
+** keyword__LINE__
+** keyword__FILE__
+** keyword__ENCODING__
+** keyword_BEGIN
+** keyword_END
+** keyword_alias
+** keyword_and
+** keyword_begin
+** keyword_break
+** keyword_case
+** keyword_class
+** keyword_def
+** keyword_defined
+** keyword_do
+** keyword_else
+** keyword_elsif
+** keyword_end
+** keyword_ensure
+** keyword_false
+** keyword_for
+** keyword_in
+** keyword_module
+** keyword_next
+** keyword_nil
+** keyword_not
+** keyword_or
+** keyword_redo
+** keyword_rescue
+** keyword_retry
+** keyword_return
+** keyword_self
+** keyword_super
+** keyword_then
+** keyword_true
+** keyword_undef
+** keyword_when
+** keyword_yield
+** keyword_if
+** keyword_unless
+** keyword_while
+** keyword_until
 * arg
 ** lhs '=' arg
 ** lhs '=' arg modifier_rescue arg
@@ -102,12 +246,42 @@
 ** tUMINUS_NUM simple_numeric tPOW arg
 ** tUPLUS arg
 ** tUMINUS arg
+** arg '|' arg
+** arg '^' arg
+** arg '&' arg
+** arg tCMP arg
+** arg '>' arg
+** arg tGEQ arg
+** arg '<' arg
+** arg tLEQ arg
+** arg tEQ arg
+** arg tEQQ arg
+** arg tNEQ arg
+** arg tMATCH arg
+** arg tNMATCH arg
+** '!' arg
+** '~' arg
+** arg tLSHFT arg
+** arg tRSHFT arg
+** arg tANDOP arg
+** arg tOROP arg
+** keyword_defined opt_nl arg
+** arg '?' arg opt_nl ':' arg
+** primary
 * opt_call_args
 ** none
 ** call_args
 ** args ','
 ** args ',' assocs ','
 ** assocs ','
+* call_args
+** command
+** args opt_block_arg
+** assocs opt_block_arg
+** args ',' assocs opt_block_arg
+** block_arg
+* command_args
+** call_args
 * mrhs_arg
 ** mrhs
 ** arg_value
@@ -117,21 +291,61 @@
 ** tSTAR arg_value
 * primary_value
 ** primary
+* opt_block_param
+** none
+** block_param_def
+* block_call
+** command do_block
+** block_call call_op2 operation2 opt_paren_args
+** block_call call_op2 operation2 opt_paren_args brace_block
+** block_call call_op2 operation2 command_args do_block
+* symbol
+** tSYMBEG sym
+* dsym
+** tSYMBEG xstring_contents tSTRING_END
+* user_variable
+** tIDENTIFIER
+** tIVAR
+** tGVAR
+** tCONSTANT
+** tCVAR
+* keyword_variable
+** keyword_nil
+** keyword_self
+** keyword_true
+** keyword_false
+** keyword__FILE__
+** keyword__LINE__
+** keyword__ENCODING__
 * var_lhs
 ** user_variable
 ** keyword_variable
 * backref
 ** tNTH_REF
 ** tBACK_REF
+* operation
+** tIDENTIFIER
+** tCONSTANT
+** tFID
+* operation2
+** tIDENTIFIER
+** tCONSTANT
+** tFID
+** op
 * call_op
 ** '.'
 ** tANDDOT
+* call_op2
+** call_op
+** tCOLON2
 * opt_terms
 ** <none>
 ** terms
 * opt_nl
 ** <none>
 ** '\n'
+* rparen
+** opt_nl ')'
 * rbracket
 ** opt_nl ']'
 * terms
@@ -139,8 +353,72 @@
 ** terms ';'
 * none
 ** <none>
+* keyword_class
+** 'class'
+* keyword_module
+** 'module'
+* keyword_def
+** 'def'
 * keyword_undef
 ** 'undef'
+* keyword_begin
+** 'begin'
+* keyword_rescue
+** 'rescue'
+* keyword_ensure
+** 'ensure'
+* keyword_end
+** 'end'
+* keyword_if
+** 'if'
+* keyword_unless
+** 'unless'
+* keyword_then
+** 'then'
+* keyword_elsif
+** 'elsif'
+* keyword_else
+** 'else'
+* keyword_case
+** 'case'
+* keyword_when
+** 'when'
+* keyword_while
+** 'while'
+* keyword_until
+** 'until'
+* keyword_for
+** 'for'
+* keyword_break
+** 'break'
+* keyword_next
+** 'next'
+* keyword_redo
+** 'redo'
+* keyword_retry
+** 'retry'
+* keyword_in
+** 'in'
+* keyword_do
+** 'do'
+* keyword_do_cond
+** 'do'
+* keyword_do_block
+** 'do'
+* keyword_return
+** 'return'
+* keyword_yield
+** 'yield'
+* keyword_super
+** 'super'
+* keyword_self
+** 'self'
+* keyword_nil
+** 'nil'
+* keyword_true
+** 'true'
+* keyword_false
+** 'false'
 * keyword_and
 ** 'and'
 * keyword_or
@@ -159,11 +437,21 @@
 ** 'rescue'
 * keyword_alias
 ** 'alias'
+* keyword_defined
+** 'defined?'
 * keyword_BEGIN
 ** 'BEGIN'
 * keyword_END
 ** 'END'
+* keyword__LINE__
+** '__LINE__'
+* keyword__FILE__
+** '__FILE__'
+* keyword__ENCODING__
+** '__ENCODING__'
 * tIDENTIFIER
+** ?
+* tFID
 ** ?
 * tGVAR
 ** ?
@@ -175,5 +463,51 @@
 ** ?
 * tOP_ASGN
 ** ?
+* tUPLUS
+** 'unary+'
+* tUMINUS
+** 'unary-'
+* tPOW
+** '**'
+* tCMP
+** '<=>'
+* tEQ
+** '=='
+* tEQQ
+** '==='
+* tNEQ
+** '!='
+* tGEQ
+** '>='
+* tLEQ
+** '<='
+* tMATCH
+** '=~'
+* tNMATCH
+** '!~'
+* tDOT2
+** '..'
+* tAREF
+** '[]'
+* tASET
+** '[]='
+* tLSHFT
+** '<<'
+* tRSHFT
+** '>>'
 * tCOLON2
 ** '::'
+* tCOLON3
+** ':: at EXPR_BEG'
+* tLPAREN
+** '('
+* tLBRACE_ARG
+** '{ arg'
+* tSTAR
+** '*'
+* tDSTAR
+** '**arg'
+* tLOWEST
+** ?
+* error ?
+* %prec ?
