@@ -284,6 +284,11 @@
 ** args trailer
 ** args ',' assocs trailer
 ** assocs trailer
+* paren_args
+** '(' opt_call_args rparen
+* opt_paren_args
+** none
+** paren_args
 * opt_call_args
 ** none
 ** call_args
@@ -322,6 +327,7 @@
 ** regexp
 ** words
 ** qwords
+** symbols
 ** qsymbols
 ** var_ref
 ** backref
@@ -401,11 +407,72 @@
 * for_var
 ** lhs
 ** mlhs
+* f_marg
+** lhs
+** mlhs
+* f_marg_list
+** f_marg
+** f_marg_list ',' f_marg
+* f_margs
+** f_marg_list
+** f_marg_list ',' tSTAR f_norm_arg
+** f_marg_list ',' tSTAR f_norm_arg ',' f_marg_list
+** f_marg_list ',' tSTAR
+** f_marg_list ',' tSTAR ',' f_marg_list
+** tSTAR f_norm_arg
+** tSTAR f_norm_arg ',' f_marg_list
+** tSTAR
+** tSTAR ',' f_marg_list
+* block_args_tail
+** f_block_kwarg ',' f_kwrest opt_f_block_arg
+** f_block_kwarg opt_f_block_arg
+** f_kwrest opt_f_block_arg
+** f_block_arg
+* opt_block_args_tail
+** ',' block_args_tail
+** <none>
+* block_param
+** f_arg ',' f_block_optarg ',' f_rest_arg opt_block_args_tail
+** f_arg ',' f_block_optarg ',' f_rest_arg ',' f_arg opt_block_args_tail
+** f_arg ',' f_block_optarg opt_block_args_tail
+** f_arg ',' f_block_optarg ',' f_arg opt_block_args_tail
+** f_arg ',' f_rest_arg opt_block_args_tail
+** f_arg ','
+** f_arg ',' f_rest_arg ',' f_arg opt_block_args_tail
+** f_arg opt_block_args_tail
+** f_block_optarg ',' f_rest_arg opt_block_args_tail
+** f_block_optarg ',' f_rest_arg ',' f_arg opt_block_args_tail
+** f_block_optarg opt_block_args_tail
+** f_block_optarg ',' f_arg opt_block_args_tail
+** f_rest_arg opt_block_args_tail
+** f_rest_arg ',' f_arg opt_block_args_tail
+** block_args_tail
 * opt_block_param
 ** none
 ** block_param_def
+* block_param_def
+** '|' opt_bv_decl '|'
+** tOROP
+** '|' block_param opt_bv_decl '|'
+* opt_bv_decl
+** opt_nl
+** opt_nl ';' bv_decls opt_nl
+* bv_decls
+** bvar
+** bv_decls ',' bvar
+* bvar
+** tIDENTIFIER
+** f_bad_arg
 * lambda
 ** f_larglist lambda_body
+* f_larglist
+** '(' f_args opt_bv_decl ')'
+** f_args
+* lambda_body
+** tLAMBEG compstmt '}'
+** keyword_do_LAMBDA compstmt k_end
+* do_block
+** keyword_do_block opt_block_param compstmt keyword_end
 * block_call
 ** command do_block
 ** block_call call_op2 operation2 opt_paren_args
@@ -426,11 +493,21 @@
 ** keyword_do opt_block_param compstmt keyword_end
 * case_body
 ** keyword_when args then compstmt cases
+* cases
+** opt_else
+** case_body
 * opt_rescue
 ** keyword_rescue exc_list exc_var then compstmt opt_rescue
 ** none
+* exc_list
+** arg_value
+** mrhs
+** none
+* exc_var
+** tASSOC lhs
+** none
 * opt_ensure
-** keyword_endsure compstmt
+** keyword_ensure compstmt
 ** none
 * literal
 ** numeric
@@ -438,6 +515,12 @@
 ** dsym
 * strings
 ** string
+* string
+** tCHAR
+** string1
+** string string1
+* string1
+** tSTRING_BEG string_contents tSTRING_END
 * xstring
 ** tXSTRING_BEG xstring_contents tSTRING_END
 * regexp
@@ -445,16 +528,60 @@
 * words
 ** tWORDS_BEG ' ' tSTRING_END
 ** tWORDS_BEG word_list tSTRING_END
+* word_list
+** <none>
+** word_list word ' '
+* word
+** string_content
+** word string_content
+* symbols
+** tSYMBOLS_BEG ' ' tSTRING_END
+** tSYMBOLS_BEG symbol_list tSTRING_END
+* symbol_list
+** <none>
+** symbol_list word ' '
 * qwords
 ** tQWORDS_BEG ' ' tSTRING_END
 ** tQWORDS_BEG qword_list tSTRING_END
 * qsymbols
 ** tQSYMBOLS_BEG ' ' tSTRING_END
 ** tQSYMBOLS_BEG qsym_list tSTRING_END
+* qword_list
+** <none>
+** qword_list tSTRING_CONTENT
+* qword_list
+** <none>
+** qword_list tSTRING_CONTENT
+* string_contents
+** <none>
+** string_contents string_content
+* xstring_contents
+** <none>
+** xstring_contents string_content
+* regexp_contents
+** <none>
+** regexp_contents string_content
+* string_content
+** tSTRING_CONTENT
+** tSTRING_DVAR string_dvar
+** tSTRING_DBEG compstmt tSTRING_DEND
+* string_dvar
+** tGVAR
+** tIVAR
+** tCVAR
+** backref
 * symbol
 ** tSYMBEG sym
+* sym
+** fname
+** tIVAR
+** tGVAR
+** tCVAR
 * dsym
 ** tSYMBEG xstring_contents tSTRING_END
+* numeric
+** simple_numeric
+** tUMINUS_NUM simple_numeric %prec tLOWEST
 * simple_numeric
 ** tINTEGER
 ** tFLOAT
@@ -489,6 +616,90 @@
 * f_arglist
 ** '(' f_args rparen
 ** f_args term
+* args_tail
+** f_kwarg ',' f_kwrest opt_f_block_arg
+** f_kwarg opt_f_block_arg
+** f_kwrest opt_f_block_arg
+** f_block_arg
+* opt_args_tail
+** ',' args_tail
+** <none>
+* f_args
+** f_arg ',' f_optarg ',' f_rest_arg opt_args_tail
+** f_arg ',' f_optarg ',' f_rest_arg ',' f_arg opt_args_tail
+** f_arg ',' f_optarg opt_args_tail
+** f_arg ',' f_optarg ',' f_arg opt_args_tail
+** f_arg ',' f_rest_arg opt_args_tail
+** f_arg ',' f_rest_arg ',' f_arg opt_args_tail
+** f_arg opt_args_tail
+** f_optarg ',' f_rest_arg opt_args_tail
+** f_optarg ',' f_rest_arg ',' f_arg opt_args_tail
+** f_optarg opt_args_tail
+** f_optarg ',' f_arg opt_args_tail
+** f_rest_arg opt_args_tail
+** f_rest_arg ',' f_arg opt_args_tail
+** args_tail
+** <none>
+* f_bad_arg
+** tCONSTANT
+** tIVAR
+** tGVAR
+** tCVAR
+* f_norm_arg
+** f_bad_arg
+** tIDENTIFIER
+* f_arg_asgn
+** f_norm_arg
+* f_arg_item
+** f_arg_asgn
+** tLPAREN f_margs rparen
+* f_arg
+** f_arg_item
+** f_arg ',' f_arg_item
+* f_label
+** tLABEL
+* f_kw
+** f_label arg_value
+** f_label
+* f_block_kw
+** f_label primary_value
+** f_label
+* f_block_kwarg
+** f_block_kw
+** f_block_kwarg ',' f_block_kw
+* f_kwarg
+** f_kw
+** f_kwarg ',' f_kw
+* kwrest_mark
+** tPOW
+** tDSTAR
+* f_kwrest
+** kwrest_mark tIDENTIFIER
+** kwrest_mark
+* f_opt
+** f_arg_asgn '=' arg_value
+* f_block_opt
+** f_arg_asgn '=' primary_value
+* f_block_optarg
+** f_block_opt
+** f_block_optarg ',' f_block_opt
+* f_optarg
+** f_opt
+** f_optarg ',' f_opt
+* restarg_mark
+** '*'
+** tSTAR
+* f_rest_arg
+** restarg_mark tIDENTIFIER
+** restarg_mark
+* blkarg_mark
+** '&'
+** tAMPER
+* f_block_arg
+** blkarg_mark tIDENTIFIER
+* opt_f_block_arg
+** ',' f_block_arg
+** none
 * singleton
 ** var_ref
 ** '(' expr rparen
@@ -498,6 +709,11 @@
 * assocs
 ** assoc
 ** assocs ',' assoc
+* assoc
+** arg_value tASSOC arg_value
+** tLABEL arg_value
+** tSTRING_BEG string_contents tLABEL_END arg_value
+** tDSTAR arg_value
 * operation
 ** tIDENTIFIER
 ** tCONSTANT
@@ -505,6 +721,10 @@
 * operation2
 ** tIDENTIFIER
 ** tCONSTANT
+** tFID
+** op
+* operation3
+** tIDENTIFIER
 ** tFID
 ** op
 * dot_or_colon
@@ -590,6 +810,8 @@
 ** 'do'
 * keyword_do_block
 ** 'do'
+* keyword_do_LAMBDA
+** ?
 * keyword_return
 ** 'return'
 * keyword_yield
@@ -640,11 +862,31 @@
 ** ?
 * tGVAR
 ** ?
+* tIVAR
+** ?
 * tCONSTANT
+** ?
+* tCVAR
+** ?
+* tLABEL
+** ?
+* tINTEGER
+** ?
+* tFLOAT
+** ?
+* tRATIONAL
+** ?
+* tIMAGINARY
+** ?
+* tSTRING_CONTENT
+** ?
+* tCHAR
 ** ?
 * tNTH_REF
 ** ?
 * tBACK_REF
+** ?
+* tREGEXP_END
 ** ?
 * tOP_ASGN
 ** ?
@@ -692,6 +934,8 @@
 ** '::'
 * tCOLON3
 ** ':: at EXPR_BEG'
+* tASSOC
+** '=>'
 * tLPAREN
 ** '('
 * tLPAREN_ARG
@@ -708,6 +952,34 @@
 ** '&'
 * tLAMBDA
 ** '->'
+* tSYMBEG
+** ?
+* tSTRING_BEG
+** ?
+* tXSTRING_BEG
+** ?
+* tREGEXP_BEG
+** ?
+* tWORDS_BEG
+** ?
+* tQWORDS_BEG
+** ?
+* tSYMBOLS_BEG
+** ?
+* tQSYMBOLS_BEG
+** ?
+* tSTRING_DBEG
+** ?
+* tSTRING_DEND
+** ?
+* tSTRING_DVAR
+** ?
+* tSTRING_END
+** ?
+* tLAMBEG
+** ?
+* tLABEL_END
+** ?
 * tLOWEST
 ** ?
 * error ?
