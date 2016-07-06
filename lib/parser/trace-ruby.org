@@ -21,6 +21,8 @@
 * top_stmt
 ** stmt
 ** keyword_BEGIN '{' top_compstmt '}'
+* bodystmt
+** compstmt opt_rescue opt_else opt_ensure
 * compstmt
 ** stmts opt_terms
 * stmts
@@ -135,6 +137,13 @@
 ** primary_value tCOLON2 tCONSTANT
 ** tCOLON3 tCONSTANT
 ** backref
+* cname
+** tIDENTIFIER
+** tCONSTANT
+* cpath
+** tCOLON3 cname
+** cname
+** primary_value tCOLON2 cname
 * fname
 ** tIDENTIFIER
 ** tCONSTANT
@@ -268,6 +277,13 @@
 ** keyword_defined opt_nl arg
 ** arg '?' arg opt_nl ':' arg
 ** primary
+* arg_value
+** arg
+* aref_args
+** none
+** args trailer
+** args ',' assocs trailer
+** assocs trailer
 * opt_call_args
 ** none
 ** call_args
@@ -282,6 +298,16 @@
 ** block_arg
 * command_args
 ** call_args
+* block_arg
+** tAMPER arg_value
+* opt_block_arg
+** ',' block_arg
+** none
+* args
+** arg_value
+** tSTAR arg_value
+** args ',' arg_value
+** args ',' tSTAR arg_value
 * mrhs_arg
 ** mrhs
 ** arg_value
@@ -289,20 +315,151 @@
 ** arg ',' arg_value
 ** arg ',' tSTAR arg_value
 ** tSTAR arg_value
+* primary
+** literal
+** strings
+** xstring
+** regexp
+** words
+** qwords
+** qsymbols
+** var_ref
+** backref
+** tFID
+** k_begin bodystmt k_end
+** tLPAREN_ARG rparen
+** tLPAREN_ARG expr rparen
+** tLPAREN compstmt ')'
+** primary_value tCOLON2 tCONSTANT
+** tCOLON3 tCONSTANT
+** tLBRACK aref_args ']'
+** tLBRACE assoc_list '}'
+** keyword_return
+** keyword_yield '(' call_args rparen
+** keyword_yield '(' rparen
+** keyword_yield
+** keyword_defined opt_nl '(' expr rparen
+** keyword_not '(' expr rparen
+** keyword_not '(' rparen
+** fcall brace_block
+** method_call
+** method_call brace_block
+** tLAMBDA lambda
+** k_if expr_value then compstmt if_tail k_end
+** k_unless expr_value then compstmt opt_else k_end
+** k_while expr_value do compstmt k_end
+** k_until expr_value do compstmt k_end
+** k_case expr_value opt_terms case_body k_end
+** k_case opt_terms case_body k_end
+** k_for for_var keyword_in expr_value do compstmt k_end
+** k_class cpath superclass bodystmt k_end
+** k_class tLSHFT expr term bodystmt k_end
+** k_module cpath bodystmt k_end
+** k_def fname f_arglist bodystmt k_end
+** k_def singleton dot_or_colon f_arglist bodystmt k_end
+** keyword_break
+** keyword_next
+** keyword_redo
+** keyword_retry
 * primary_value
 ** primary
+* k_begin
+** keyword_begin
+* k_if
+** keyword_if
+* k_unless
+** keyword_unless
+* k_while
+** keyword_while
+* k_until
+** keyword_until
+* k_case
+** keyword_case
+* k_for
+** keyword_for
+* k_class
+** keyword_class
+* k_module
+** keyword_module
+* k_def
+** keyword_def
+* k_end
+** keyword_end
+* then
+** term
+** keyword_then
+** term keyword_then
+* do
+** term
+** keyword_do_cond
+* if_tail
+** opt_else
+** keyword_elsif expr_value then compstmt if_tail
+* opt_else
+** none
+** keyword_else compstmt
+* for_var
+** lhs
+** mlhs
 * opt_block_param
 ** none
 ** block_param_def
+* lambda
+** f_larglist lambda_body
 * block_call
 ** command do_block
 ** block_call call_op2 operation2 opt_paren_args
 ** block_call call_op2 operation2 opt_paren_args brace_block
 ** block_call call_op2 operation2 command_args do_block
+* method_call
+** fcall paren_args
+** primary_value call_op operation2 opt_paren_args
+** primary_value tCOLON2 operation2 paren_args
+** primary_value tCOLON2 operation3
+** primary_value call_op paren_args
+** primary_value tCOLON2 paren_args
+** keyword_super paren_args
+** keyword_super
+** primary_value '[' opt_call_args rbracket
+* brace_block
+** '{' opt_block_param compstmt '}'
+** keyword_do opt_block_param compstmt keyword_end
+* case_body
+** keyword_when args then compstmt cases
+* opt_rescue
+** keyword_rescue exc_list exc_var then compstmt opt_rescue
+** none
+* opt_ensure
+** keyword_endsure compstmt
+** none
+* literal
+** numeric
+** symbol
+** dsym
+* strings
+** string
+* xstring
+** tXSTRING_BEG xstring_contents tSTRING_END
+* regexp
+** tREGEXP_BEG regexp_contents tREGEXP_END
+* words
+** tWORDS_BEG ' ' tSTRING_END
+** tWORDS_BEG word_list tSTRING_END
+* qwords
+** tQWORDS_BEG ' ' tSTRING_END
+** tQWORDS_BEG qword_list tSTRING_END
+* qsymbols
+** tQSYMBOLS_BEG ' ' tSTRING_END
+** tQSYMBOLS_BEG qsym_list tSTRING_END
 * symbol
 ** tSYMBEG sym
 * dsym
 ** tSYMBEG xstring_contents tSTRING_END
+* simple_numeric
+** tINTEGER
+** tFLOAT
+** tRATIONAL
+** tIMAGINARY
 * user_variable
 ** tIDENTIFIER
 ** tIVAR
@@ -317,12 +474,30 @@
 ** keyword__FILE__
 ** keyword__LINE__
 ** keyword__ENCODING__
+* var_ref
+** user_variable
+** keyword_variable
 * var_lhs
 ** user_variable
 ** keyword_variable
 * backref
 ** tNTH_REF
 ** tBACK_REF
+* superclass
+** '<' expr_value term
+** <none>
+* f_arglist
+** '(' f_args rparen
+** f_args term
+* singleton
+** var_ref
+** '(' expr rparen
+* assoc_list
+** none
+** assocs trailer
+* assocs
+** assoc
+** assocs ',' assoc
 * operation
 ** tIDENTIFIER
 ** tCONSTANT
@@ -332,6 +507,9 @@
 ** tCONSTANT
 ** tFID
 ** op
+* dot_or_colon
+** '.'
+** tCOLON2
 * call_op
 ** '.'
 ** tANDDOT
@@ -348,6 +526,13 @@
 ** opt_nl ')'
 * rbracket
 ** opt_nl ']'
+* trailer
+** <none>
+** '\n'
+** ','
+* term
+** ';'
+** '\n'
 * terms
 ** term
 ** terms ';'
@@ -465,6 +650,8 @@
 ** ?
 * tUPLUS
 ** 'unary+'
+* tUMINUS_NUM
+** ?
 * tUMINUS
 ** 'unary-'
 * tPOW
@@ -481,12 +668,18 @@
 ** '>='
 * tLEQ
 ** '<='
+* tANDOP
+** '&&'
+* tOROP
+** '||'
 * tMATCH
 ** '=~'
 * tNMATCH
 ** '!~'
 * tDOT2
 ** '..'
+* tDOT3
+** '...'
 * tAREF
 ** '[]'
 * tASET
@@ -501,12 +694,20 @@
 ** ':: at EXPR_BEG'
 * tLPAREN
 ** '('
+* tLPAREN_ARG
+** '( arg'
+* tLBRACK
+** '['
 * tLBRACE_ARG
 ** '{ arg'
 * tSTAR
 ** '*'
 * tDSTAR
 ** '**arg'
+* tAMPER
+** '&'
+* tLAMBDA
+** '->'
 * tLOWEST
 ** ?
 * error ?
