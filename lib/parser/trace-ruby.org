@@ -1,18 +1,11 @@
-* program <= ?
+* program
 | line | lex_state |
 |  950 | EXPR_BEG  |
-** top_compstmt <= ?
-*** top_stmts opt_terms <= ?
-**** none opt_terms <= ?
-***** none none <= 
-***** none terms <= ?
-**** top_stmt opt_terms <= ?
-**** top_stmts terms top_stmt opt_terms <= ?
-**** error top_stmt opt_terms <= ?
-* top_compstmt <= ?
+** top_compstmt
+* top_compstmt
 | line | lex_state |
 |  950 | EXPR_BEG  |
-** top_stmts opt_terms <= ?
+** top_stmts opt_terms
 * top_stmts
 ** none
 ** top_stmt
