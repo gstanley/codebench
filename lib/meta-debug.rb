@@ -24,3 +24,10 @@ Pry::Commands.create_command "show-trace" do
     output.puts $trace.inspect
   end
 end
+Pry::Commands.create_command "clear-trace" do
+  description "Clear the trace."
+
+  def process
+    $trace = []
+  end
+end
