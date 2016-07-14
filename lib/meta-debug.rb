@@ -9,12 +9,20 @@ Pry::Commands.create_command "trace" do
     @line = target.eval('__LINE__')
   end
 
+  def options(opt)
+    opt.on :r, :repcode, "Set replacement code", :argument => true do |r|
+      @repcode = r
+    end
+  end
+
   def process
-    $trace << {
+    line_trace = {
       file: @file,
       line: @line,
-      code: Pry::Code.from_file(@file).take_lines(@line, 1).to_s
+      code: Pry::Code.from_file(@file).take_lines(@line, 1).to_s.chomp
     }
+    line_trace[:repcode] = @repcode if @repcode
+    $trace << line_trace
   end
 end
 Pry::Commands.create_command "show-trace" do
