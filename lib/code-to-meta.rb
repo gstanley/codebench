@@ -38,5 +38,9 @@ assert_equal(Fixnum, result)
 *** classes
 *** examples
 ** execution count
+- custom setup/teardown
+- inputs
+- dependencies
+- assertion
 =end
 
