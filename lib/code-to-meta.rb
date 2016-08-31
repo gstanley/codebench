@@ -34,13 +34,22 @@ assert_equal(Fixnum, result)
 *** from generator
 ** replace code
 *** alternate code
+*** alternative language
 ** inputs
 *** classes
 *** examples
+** effects (trace)
 ** execution count
-- custom setup/teardown
-- inputs
+** parser
+** generator
+** live coding setup
+** execute in stepper
+** code slice (information)
+** refactorings/transformations
 - dependencies
-- assertion
+  - inputs
+  - sensors
+- results/effects
+- custom setup/teardown
 =end
 
