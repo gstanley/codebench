@@ -28,6 +28,7 @@ numeric literal
 result = 1.class
 assert_equal(Fixnum, result)
 ** dependency list
+*** dependency tree
 ** sensor list
 ** replace dependencies
 *** from list
