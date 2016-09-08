@@ -1,7 +1,12 @@
+require "ripper"
+
 def ruby_to_meta(code)
 end
 
 def javascript_to_meta(code)
+end
+
+def get_deps(code)
 end
 
 =begin
