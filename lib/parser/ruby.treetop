@@ -1,84 +1,86 @@
 require 'ostruct'
 
 grammar Ruby
-  rule method_call
-    primary_value call_op operation2 {
-      def tree
-        OpenStruct.new({
-          :text => text_value,
-          :primary_value => primary_value.tree,
-          :operation2 => operation2.tree
-        })
-      end
-    }
-  end
+  include Common
 
-  rule primary
-    literal '' {
-      def tree
-        OpenStruct.new({
-          :text => text_value,
-          :literal => literal.tree
-        })
-      end
-    }
-  end
-
-  rule primary_value
-    primary '' {
-      def tree
-        OpenStruct.new({
-          :text => text_value,
-          :primary => primary.tree
-        })
-      end
-    }
-  end
-
-  rule literal
-    numeric '' {
-      def tree
-        OpenStruct.new({
-          :text => text_value,
-          :numeric => numeric.tree
-        })
-      end
-    }
-  end
-
-  rule numeric
-    simple_numeric '' {
-      def tree
-        OpenStruct.new({
-          :text => text_value,
-          :simple_numeric => simple_numeric.tree
-        })
-      end
-    }
-  end
-
-  rule simple_numeric
-    '1' '' {
-      def tree
-        OpenStruct.new({
-          :text => text_value
-        })
-      end
-    }
-  end
-
-  rule operation2
-    'class' '' {
-      def tree
-        OpenStruct.new({
-          :text => text_value
-        })
-      end
-    }
-  end
-
-  rule call_op
-    '.'
-  end
+#  rule method_call
+#    primary_value call_op operation2 {
+#      def tree
+#        OpenStruct.new({
+#          :text => text_value,
+#          :primary_value => primary_value.tree,
+#          :operation2 => operation2.tree
+#        })
+#      end
+#    }
+#  end
+#
+#  rule primary
+#    literal '' {
+#      def tree
+#        OpenStruct.new({
+#          :text => text_value,
+#          :literal => literal.tree
+#        })
+#      end
+#    }
+#  end
+#
+#  rule primary_value
+#    primary '' {
+#      def tree
+#        OpenStruct.new({
+#          :text => text_value,
+#          :primary => primary.tree
+#        })
+#      end
+#    }
+#  end
+#
+#  rule literal
+#    numeric '' {
+#      def tree
+#        OpenStruct.new({
+#          :text => text_value,
+#          :numeric => numeric.tree
+#        })
+#      end
+#    }
+#  end
+#
+#  rule numeric
+#    simple_numeric '' {
+#      def tree
+#        OpenStruct.new({
+#          :text => text_value,
+#          :simple_numeric => simple_numeric.tree
+#        })
+#      end
+#    }
+#  end
+#
+#  rule simple_numeric
+#    '1' '' {
+#      def tree
+#        OpenStruct.new({
+#          :text => text_value
+#        })
+#      end
+#    }
+#  end
+#
+#  rule operation2
+#    'class' '' {
+#      def tree
+#        OpenStruct.new({
+#          :text => text_value
+#        })
+#      end
+#    }
+#  end
+#
+#  rule call_op
+#    '.'
+#  end
 end
 
