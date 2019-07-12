@@ -1,0 +1,509 @@
+* files
+** [[C:\dev\projects\codebench\lib\artifact.rb]]
+*** load artifact classes (in A<n> format)
+*** Artifact
+**** code - source code template
+**** list - child artifacts or elements?
+**** doc - description
+**** ldoc - long description
+**** file - filename (actual or virtual?)
+**** line - line number in (virtual?) file
+**** slot - multiline section?
+**** index (?)
+**** parent (parent in artifact tree)
+**** list_children
+**** context (context for configuration)
+*** Art (top level methods)
+**** get by name - get a list of artifacts with a name
+get_by_name
+**** get root artifact
+get_root
+**** get artifact using path
+get_by_path
+**** get a child artifact using name or index
+get_child
+**** parse a path string
+parse_path
+***** absolute or relative
+***** use name or numeric index
+**** set current node in artifact tree
+set_current
+**** set current file path?
+**** get artifact with file name
+get_file
+**** get file contents for file in artifacts
+get_file_contents
+** [[C:\dev\projects\codebench\lib\artifacts\a0.rb]]
+*** artifact methods
+**** name
+**** code
+**** doc
+**** ldoc
+**** file
+**** line
+**** parent (defaults)
+** [[C:\dev\projects\codebench\lib\artifacts\a8.rb]]
+*** artifact methods
+**** type: 'file' (for file type)
+** [[C:\dev\projects\codebench\lib\artifacts\a9.rb]]
+*** use parent and code to add code to a file (artifact is subfile)
+** [[C:\dev\projects\codebench\lib\artifacts\a12.rb]]
+*** use line to put code in another part of file
+** [[C:\dev\projects\codebench\lib\artifacts\a16.rb]]
+*** context: show use of text context
+** [[C:\dev\projects\codebench\lib\artifacts\clojure_context.rb]]
+*** structure: metadata for program artifact (entry point file in this case)
+*** executor: syntax template for command line
+*** main_body: template for entry point file
+*** defaults for name, code
+*** parent: put context in tree (parent is exec contexts node in this case)
+** [[C:\dev\projects\codebench\lib\orch.rb]]
+*** methods
+**** initialize: get context methods
+**** execute: execute code in memory or through system
+**** execute_tasks: execute submethods to run full process
+**** capture: execute system command and capture the results
+**** generate_source: generate source from template
+**** generate_executor: generate execution command from template
+**** format_outputter: create file/code structures
+**** save_sources: save file structures
+**** parse_results: adjust results for various contexts
+** [[C:\dev\projects\dev-notes\art-things.org]]
+*** make stage structure
+*** stages
+**** artifact => generate
+**** generated source => save
+**** filesystem source => compile
+**** filesystem source => run
+**** filesystem executable => run
+**** filesystem results => read
+**** results => user observes
+*** stage reduction
+stages:
+- <first_stage>
+- <second stage>
+- ...
+a: ...
+b: ...
+c: ...
+
+=> first stage runs and results in:
+stages:
+- <second stage>
+- ...
+a: <changed>
+c: <unchanged>
+d: <added>
+# b was removed
+*** results
+- these are strictly in a structure (sensing comes before)
+**** call result
+***** predicate result
+**** stdout
+**** stderr
+**** file
+***** filesystem info
+****** file attributes
+****** dir info
+**** environment var
+**** global var
+**** doc
+***** long/short
+***** keywords/categories
+***** artifact version
+**** generated source
+**** exception info
+**** trace info
+**** database data
+**** list
+***** artifacts
+***** other things
+** [[C:\dev\projects\dev-notes\howto.org]]
+stages:
+- setup
+- gen files
+- save files
+- commands
+- sense effects
+** [[C:\dev\projects\dev-notes\howto.org]]
+*** conversions/transformations as views
+same mechanism as art view
+*** possible keys
+<no key> (value)
+sensors
+children
+name
+doc
+ldoc
+code ; in tree form
+  name ; file name (or other code location)
+source
+text
+params
+<param name>
+lang
+deps
+stages
+  context
+id
+version
+notes
+created at
+updated at
+keywords/categories
+execution context
+inputs
+outputs
+  expectations for tests
+<exec lang/sublang>
+** [[C:\dev\projects\dev-notes\temp-qd-art\art]]
+*** setup thor art executor
+*** gen: generate code from template
+*** list: list artifacts for node
+*** exec: execute code from template
+*** doc: show documentation
+*** show: show tree for artifact
+** [[C:\dev\projects\dev-notes\temp-qd-art\executors.rb]]
+*** execute: execute code and sense output
+*** template: template for source code
+** [[C:\dev\projects\solos\exec-reconcile.rb]]
+# this is a reconcile of previous versions of art/exec
+# final goal is to merge back into another one of these systems
+# exec types:
+# - *just exec
+# - *exec with params
+# - exec multiple times (w/ params)
+# - *exec with deps
+# - exec with alternate dep
+#   - from value
+#   - from fixture
+#   - from random
+#   - alternate function calls
+# - exec alternate (same language)
+# - exec with language specified
+# - *generate
+# - *doc
+# - index terms (doc and keywords)
+# - missing info
+# - parse
+# - char tests?
+# - exec with value trace
+#
+# main exec takes a map with "source" => "..."
+# todo: search for instances of exec or art
+# add exec with yaml (calls regular exec)
+# add exec with defaults (merges a default map)
+# emacs helpers
+# - xiki?
+# - org-babel helpers
+# implement cutpoints
+# - before line
+#   - show location
+#   - show value of inputs/dependencies
+#     - or save value of inputs/dependencies
+#   - change value of inputs/dependencies
+# - at line
+#   - replace line
+# - after line
+#   - show value of outputs/results
+# implement cutpoint helpers
+# - ruby
+# - javascript
+# - java
+# - clojure? (may be already integrated with exec functionality)
+#
+# merge params both ways
+# - artifacts specialize default parameters
+# - some default parameters are protected (artifacts don't change them)
+# - artifacts add to default lists
+#
+# add view(s) for execute results
+
+# - generate
+# - execute(tasks)
+#   - iterate over tasks
+#     - eval: eval task["code"]
+# - execute_task
+# - merge_params
+# - generate_task
+# - build
+# - expressions(code)
+
+*** generate
+*** execute: iterate over tasks and execute each
+*** execute_task
+*** build
+*** statements
+*** doc
+*** capture
+** [[C:\doc\repo\scratch-160408.org]]
+- methods/functions
+- modules/classes
+- constructs/patterns
+- tranformations/refactorings
+- examples
+- other parsers
+- other generators
+
+- ptd
+- rails apps from books
+  - generators
+- android apps from book
+  - generators
+- ruby code from book
+- study lisp
+- emacs configs
+- thor tutorials
+  - generators
+- gregorystanley.com
+- yelp/glassdoor
+
+- virtual files
+- repl => save code in database as a flat virtual file
+- source code => save code in a database as a virtual file
+- code metadata screen (user fills in)
+  - drop down list for known values
+  - language
+  - equivalence classes
+  - standard equivalence classes
+  - sensing functions
+- insert code like yasnippet
+  - available code in database
+- exporters
+- save code in tree format (ast)
+
++ save artifact
++ list artifacts
++ enter metadata for artifact
++ generate artifact
++ execute artifact
+- associate artifact with file
+- execute artifact w/ language metadata
+- enter artifact: expression/statement/code block
+- import code from file
+- incorporate artifact code
+- get artifact by path
+- list artifacts by path
+- get artifact by path with id
+- list artifacts by path with id
+- integrate with next
+- integrate with laser
+
+- source at line
+- file at line
+- variables in scope
+- value of variable
+- value of expression
+- stack frame
+- fake a function call
+- class and method at line
+---
+- line trace
+  - use a watcher like disp
+- variables trace
+  - use a watcher like disp
+  - include actual types
+- dependency tree
+- code slice?
+- possible values/equivalence classes
+- special step/next commands that save what I want
+  - change the way current line is evaluated
+    - execute stub methods
+    - execute code from another language (ex. debug java code)?
+- integrate with previous
+- integrate with laser
+
+- unit test
+- thor task
+- boson task
+- tap task
+- treetop parser
+- rails action
+- ruby-debug command
+- erb template
+- rake task
+- plain script
+- method in memory (ex. irb)
+- emacs org-babel block
+- eev escript
+- xiki ?
+** [[C:\doc\repo\scratch-160419.org]]
+*** use lang to execute
+**** DONE basic execution context
+**** DONE text artifact
+**** DONE ruby artifact
+**** DONE shell artifact
+**** DONE lisp artifact (clisp)
+**** DONE elisp artifact
+**** DONE racket artifact
+**** DONE clojure artifact
+**** haskell artifact
+**** javascript artifact
+**** scala artifact
+**** c++ artifact
+- shows off compiled code
+*** versioning
+- go back and assign versions to git commits
+*** use code in list flag
+*** generate with params
+*** artifact with parent
+*** inherit params from parent
+**** parent has param
+**** child and parent have params
+**** child inherits code from parent and has params (parent might have default)
+*** create artifact (classes | objects) from yaml
+**** multiple yaml files/dirs
+*** global variable sensor
+- generalize sensors
+**** specify sensors
+- change execute based on specified sensors
+*** execution context
+**** different ways to build source
+**** DONE specify language
+- move from lang attribute?
+**** different ways to execute code (generated) or executable/library (compiled)
+**** specify dependencies here?
+**** inherit exec context
+***** exec context path
+*** transform results
+*** handle errors/missing dependencies
+*** list not implemented/not been done features from artifacts
+*** execute/generate multiple artifacts, file, part of file
+*** debugger execution context
+*** stepper execution context
+*** repl execution context
+**** save to history (virtual) file - on/off
+*** pipeline execution context
+*** artifact search
+*** DONE show doc
+*** DONE show ldoc
+*** DONE art with file location
+**** DONE slot number/line number
+- example: *history* has slot number
+**** DONE art with virtual file: *history*
+*** DONE get art by name
+*** DONE get art by path
+**** DONE /
+**** DONE /a/b/c
+*** DONE use/change current path
+*** DONE get art by path w/ index
+*** DONE list artifact children
+*** DONE list top children
+*** DONE list for file
+*** DONE back out class -> instance conversion
+*** DONE test that runs all tests
+*** DONE basic Orchestrator
+* videos
+** [[https://youtu.be/c52QhiXsmyI][REBL]]
+* notes
+** exec
+*** thor
+*** org-babel
+*** exec method (takes struct)
+*** xiki
+*** web api
+*** suture (other similar)
+- part of exec config?
+*** value trace
+*** symbolic exec
+*** repl
+*** pipeline
+** load environment
+** output source tree
+** system command
+*** build
+*** run
+** parse output
+** generate
+*** source
+*** instrumented code (from exec config?)
+** view
+*** doc
+*** source (generated)
+*** execution results
+*** test execution results
+*** parse code into ast
+*** characterization tests
+*** dependencies (known and unknown) (in db?)
+*** code slice
+*** transformation/conversion
+**** code
+**** plain text
+*** control flow graph
+** merge system
+*** protect attribute
+** use properties in org-mode
+*** merge properties
+** web app wrapper
+** execution config
+*** language
+*** exec as test
+*** different interpreter/compiler
+*** library config
+*** multiple?
+*** change deps (subst deps)
+** [[http://mindprod.com/project/scid.html][scid]]
+** history file (artifacts from repl history?)
+** org file
+** list artifacts
+** find artifacts
+** keep history as
+*** text
+*** yaml
+*** org
+*** db
+** generate config
+*** params
+** undo after exec (in exec config?)
+** lang
+*** ruby - interpret in memory
+*** ruby - interpret external
+*** clojure
+*** racket
+*** elisp
+*** common lisp
+*** text (exec just gives text/identity)
+*** system
+*** javascript
+*** c++
+*** c#
+*** java
+*** haskell
+*** <default> => text
+*** processing
+*** system/atari program in emulator
+*** shen
+*** prolog
+*** forth
+*** sql
+** language/sublanguage defaults
+** sensors
+** capture
+** replace dep (exec config)
+*** value
+*** fixture value
+*** random value
+*** stream value
+*** proc call/lambda/fake
+** doc
+*** keywords
+*** categories
+*** short and long description
+** source, code, text - equivalent
+** source -> a collection? (instead of text)
+** navigate artifacts (like filesystem)
+** database of configurations
+*** for lang/sublang
+*** has default dependencies
+** stages
+*** export
+*** compile
+*** execute
+*** view
+**** for stage?
+**** effects prev stage?
+** about
+*** show system info (configuration)
+** artifact versioning
+* todo
+** DONE make artifact structure in clojure
