@@ -393,6 +393,551 @@ outputs
 *** DONE back out class -> instance conversion
 *** DONE test that runs all tests
 *** DONE basic Orchestrator
+** [[D:\dev\src\2014\08Aug\codebench\doc\project.org]]
+*** start after break
+**** TODO gather requirements from old projects
+**** art-req
+***** parse /project/node_name#2/subnode
+****** separate next named node with /
+****** separate next numbered node with #
+***** nodes are:
+****** file system directories
+****** org file headlines
+****** yaml/xml nodes
+****** modules/classes/methods/functions inside scripts/libraries
+****** thor namespaces/actions
+***** explore nodes with dired-like interface
+***** previous stuff
+****** [[file:I:\src\art_db.txt][art_db.txt]]
+******* artifact
+******** id
+******** name
+******** version
+******** doc
+******** notes
+******** code
+******** timestamps?
+******* list
+******** id
+******** name
+******** doc
+******* list_item
+******** id
+******** list_id
+******** item
+******** doc
+******* keyword
+******** id
+******** name
+******** type? (category/keyword)
+******** doc
+******* art_keyword
+******** id
+******** art_id
+******** keyword_id
+******* execution_context
+******** id
+******** name
+******** script?
+******** doc
+******* art_execution
+******** id
+******** art_id
+******** exec_id
+****** [[file:i:/pim/index.org::run named command][index.org]]
+****** [[file:i:/src/proto/0022][src/proto/0022]]
+******* [[file:i:/src/proto/0022/artdb.leo][artdb.leo]]
+**** DONE handle artifact directories
+- merge existing code & decide on best solution
+*** explorer
+**** TODO look at old projects
+**** TODO explore/bootstrap odb
+**** TODO implement with
+***** instrumentation
+***** Explorer.add( src, ... )
+**** TODO parser for source automagically pulls out metadata e.g. local variables
+**** TODO handle
+***** TODO generic execution language
+***** TODO ruby
+***** TODO haskell
+***** TODO lisp
+***** TODO java
+**** TODO code slicing
+**** TODO in/out analysis
+**** TODO input combinations
+**** TODO study unravel, indus, frama-c, ...
+**** TODO look at pseudocode for generic execution language
+***** [[http://www.bfoit.org/Intro_to_Programming/Pseudocode.html][Intro to Programming - Pseudocode]]
+***** [[http://users.csc.calpoly.edu/~jdalbey/SWE/pdl_std.html][Pseudocode Standard]]
+*** TODO optional artid to make not be stuck with ordering
+- /path/id<n>
+*** TODO create tests for current code to understand
+*** TODO code block/tests in orgfile
+*** emacs tasks
+**** TODO tests from emacs (org-babel)
+**** TODO artifact list mode
+*** TODO [[http://en.wikipedia.org/wiki/Pipeline_%28software%29][Pipelines in GUIs]]
+*** TODO fix multiple parents for an artifact after I get rid of artids
+might keep artid as an option for code_location link
+*** TODO an .art_config file in a directory provides default configuration for directories and artifacts in the directory
+*** TODO change repository load to not drill down for art files
+*** TODO save state of tree when exiting
+*** TODO multiple history files can be in the system
+- including one default/master history (in main .artifacts dir)
+- each project may have a history (or histories)
+*** TODO history/repl is kept in a tree so that you can go up the tree and use the defaults
+for the parent node instead of the defaults for the current line of
+history which change with default nodes
+*** TODO pull in code from exec project
+**** TODO use new locator
+**** TODO merge artenvironment with repository
+**** TODO lose art_ids
+- use children attributes instead
+- will make changing artifacts more difficult
+- use internal art_id?
+**** DONE add new tasks
+*** TODO always use '.' for command line; never use '.' for gui
+took '.' out of locations
+*** tasks from exec
+**** TODO [[www.faqs.org/docs/artu/ch11s07.html#id2960228][Polyvalent-Program Pattern]]
+***** application-domain logic in a library with an api
+***** api documentation
+***** cantrip/cli batch mode script
+***** gui
+***** scripting interface using a scripting language
+***** unit test
+***** optional
+****** rogue interface using curses
+****** web interface
+**** TODO locator object
+***** TODO locate artifact
+****** TODO in evernote
+****** TODO using namespaces
+****** TODO utility repo (tap, thor, boson...)
+****** TODO in library
+****** TODO in db
+****** TODO in source code
+- by line numbers
+- by name
+****** TODO in orgfile
+****** TODO on clipboard
+****** TODO find using incomplete location info
+****** TODO find using indexed info
+****** TODO using url
+- maybe use a routing mechanism like rails routes
+****** TODO using alias
+****** DONE in yaml
+****** DONE filesystem location
+***** TODO resolve map from one location to another
+map could be in a file
+map could be in a db
+***** DONE list artifacts
+***** DONE Locator subclasses to handle location types
+like a DBLocator that can find an art in a database
+**** TODO an exec function that takes
+***** an artifact
+***** a config hash
+****** function parameters
+****** options for runner
+****** the language
+***** a view
+**** TODO rework views
+**** TODO execution views
+***** DONE syntax
+ex:view:view(param,param):view
+***** DONE out
+***** DONE err
+***** DONE result
+***** vars (specified in art)
+***** clipboard
+***** hirb
+***** custom (specified in art)
+***** yaml
+***** emacs buffer
+***** DONE console
+***** popup window
+***** anything?
+***** input
+****** TODO default
+****** dialog
+****** highline
+****** piped/stdin
+***** check if should implement as monads
+**** TODO add wrapper code (like the (print ...) in lisp)
+- on view list?
+- typical wrapper will set 'stdout', 'result', others in yaml
+- boilerplate code
+**** TODO script to provide --cmd and --name parameters (tap specific)
+**** TODO allow org mode as a format for artifacts
+**** TODO bring in codebench repository handling
+**** contexts:
+***** TODO c/c++
+***** TODO lisp
+***** TODO bash
+***** TODO other languages
+***** TODO library call (lib or dll/so)
+***** TODO emacs function
+***** TODO url
+***** TODO tap workflow (using tap syntax)
+***** TODO parser
+***** TODO emacs - anything
+***** generator
+****** TODO with execution
+****** TODO without execution (useful for artifacts with complex dependencies (like rails) that I may not want to run through art) (or may be dangerous to run)
+***** TODO sql
+***** TODO exec context custom code in an artifact
+**** TODO examples:
+    code template with params like:
+      code: Hello <%= name_param %>
+      examples:
+      - name_param: Bob
+        result: Hello Bob
+      - name_param: Carol
+        result: Hello Carol
+    result can be used to run example as a test
+**** TODO default test is assert_equal; support other kinds of tests (e.g. match_result -> assert_match)
+**** TODO links (useful for table of contents, favorites)
+**** TODO links to other places in filesystem
+**** TODO top level commands? (don't need /; implemented as links)(favorites/toc/artifact.yml)
+**** TODO use yaml attributes to provide data to tap (e.g. --help displays doc from yaml)
+**** TODO completion to fill in artifact nodes (directories/internal nodes)
+***** TODO case insensitive
+***** TODO skip underscores
+***** TODO search artifact for keywords (any text that makes the artifact unique)
+***** TODO complete intervening nodes if unique keyword is found down the tree
+**** TODO gui for changing artifacts:
+***** TODO tree list
+***** TODO drag & drop for contexts/categories
+***** TODO execute from button
+***** TODO create artifact from text entry
+**** TODO create artifact from emacs region
+**** TODO execute artifact from emacs
+**** TODO execute artifact from org/outline node
+**** TODO birds from To Mock a Mockingbird
+**** TODO add search (with indexing?)
+**** TODO save artifacts in db (in addition to ~/.artifact)
+**** TODO use rcapture to get more info from execution
+**** TODO pass results along pipeline for other contexts
+***** TODO use monads
+***** TODO add a splitter/data transformer function to artifact
+- gets received data into correct form (lines, characters,
+  object/hash...)
+***** TODO implicit splitter/data transformers between each artifact
+***** TODO an artifact can act as an explicit transformer
+**** DONE imported old codebench code
+**** DONE generate with user supplied parameters
+**** DONE fix locate art file
+- should be list of artifacts
+**** DONE default blocks in locator
+**** DONE fix lisp template
+might put back later (2 parts)
+**** DONE fix root level art files
+**** DONE fix template problem
+**** DONE hook up Locator
+**** DONE locate by index for DirLocator
+**** DONE handle ART_HOME/locations file
+**** DONE refactor for learning (to remember what I did)
+***** find everything that uses/calls a function/datum
+***** create emacs org-babel code blocks for small pieces
+***** create a mock library for the code blocks to use
+**** DONE use name for finding artifact
+**** DONE list names in local files
+**** DONE execution views
+**** DONE make work from ex.bat
+**** DONE 2nd default block changes defaults
+**** DONE default block (sets things like default exec context)
+**** DONE generate with default parameters
+**** DONE generate command
+**** DONE make work with an artifact file in local dir
+**** DONE generate code from erb template
+**** DONE doc and show commands
+**** DONE added pathing
+**** DONE show command
+**** DONE fixed exec error
+**** DONE use HOME variable
+**** contexts:
+***** DONE ruby
+****** DONE plain
+****** DONE with stdout
+***** DONE system command
+***** DONE haskell
+**** DONE use configs to input command and pathname
+**** DONE pass results along the pipeline
+*** TODO merge exec code in as the command line interface
+*** TODO issue: looks like an issue with parameter artifact
+- find an artifact with code
+- create an artifact with a code_location
+- save artifact
+- save reference
+- set code reference
+- save artifact?
+- generate on parameter artifact
+*** TODO change tree node name when artifact is edited
+*** TODO issue: newly created node does not show yaml
+*** TODO refresh yaml when setting code reference
+*** TODO parameter sources
+**** DONE the artifact
+**** DONE parent
+**** DONE refering artifact (parameter artifact (no code of its own))
+**** TODO parameter dialog
+on the repository/artifact side, passed in as env variable
+**** TODO global parameters
+just set them in the root artifact
+**** TODO random or sequential parameters
+***** served by a parameter generating proc
+*** TODO setup/teardown for artifacts
+*** TODO output expectations
+in order to run as a test
+*** TODO change to save filename in parent attribute
+*** TODO command: delete artifact
+*** TODO command: save all artifacts
+*** TODO edit attributes graphically (edit view)
+*** TODO tree lists are populated through a list(-code) attribute
+*** TODO the list attribute can create attributes that exist in the database or virtual
+*** TODO implement root artifact
+**** TODO has the default list attribute (move population code here)
+*** TODO test interface
+*** TODO tap interface
+*** TODO rack/rails/sinatra interface
+**** TODO rack
+**** TODO rails
+**** TODO sinatra
+*** TODO org-babel interface
+*** TODO control order in tree
+*** TODO send generated code to emacs
+*** TODO import artifacts from files/directories/org-files...
+*** TODO import previous code and tasks
+*** TODO different views on artifact (tabs)
+*** TODO 'view code' in artifact
+*** TODO tree view of project/container
+*** TODO drag artifact/drop on target artifact
+**** drop attribute with code that operates on the drag artifact
+**** i.e. target may have code to change artifact category
+*** TODO specify locations file(s) on command line
+*** TODO launch eval window based on a project
+- the project will have language, setup/teardown default settings for the examples entered
+- a buffer is created that acts as a repl
+  - commands/examples are saved in history artifact file
+- as the examples are entered, the value of the expressions are sent to an output window
+- rails project has the equivalent of script/console?
+- subprojects
+  - subproject can introduce new defaults for the examples
+*** TODO rebase ids
+*** TODO timestamps and versioning
+*** TODO scid requirements
+**** TODO enter and sort(prioritize?) the requirements
+*** TODO workflows/pipeline (controller artifact?)
+*** TODO artdb
+*** TODO artifact with code in filesystem
+*** TODO search
+**** search results in view
+*** TODO search term in artifact path
+*** TODO plugin system in artifact form
+**** TODO look at freebase
+*** TODO consider using rubytree for artifacts tree
+*** TODO consider project to actually be a view on an external project (cedet)
+tasks that operate on projects interface with the external project tools
+small projects may still reside in repository
+*** TODO view on filesystem as virtual artifacts
+implement through list procedure
+*** TODO steal ideas from
+**** TODO eev
+**** TODO org/babel
+*** TODO implement artifact as collection of database information to facilitate scid
+*** TODO implement indentation for code generation
+*** DONE generate/execute with parameters
+a parameter may control whether to generate documentation,
+  run the tests, where to save...
+*** DONE add code to history subnodes
+*** DONE get help
+*** DONE elisp executor
+*** DONE views
+*** DONE implement java executor
+*** DONE change history file
+*** DONE set params on command line
+*** DONE context and location
+*** DONE command line repl
+**** DONE save history as artifacts
+**** DONE can access artifacts from repl
+*** DONE show code instead of name option
+*** DONE doc command
+*** DONE copy in old exec files
+- create tests for exec and codebench files; determine which parts of
+  the api I like better (if exec is better, replace/merge into codebench)
+*** DONE reorganized test.art
+*** DONE added execution contexts
+*** DONE rename 'source' to 'code'
+*** DONE parameterized artifact (source in another artifact)
+*** DONE get default parameters from parent
+*** DONE capture stdout/err on exec
+*** DONE move appropriate code from Repository to Artifact
+*** DONE exec/generate parameters
+*** DONE fix filenames (get rid of '\'s, make data full path)
+*** DONE notes/lists in artifact
+got it for free
+*** DONE generate source
+*** DONE execute artifact
+*** DONE remove show page (might add back later)
+*** DONE new artifact
+*** DONE save artifact
+*** DONE implement lazy loading of artifacts
+*** DONE flattened data
+*** DONE edit artifact
+*** DONE new repo file
+*** DONE select from list and show the artifact
+*** DONE list artifacts from repository
+*** DONE added a notebook
+*** DONE added repository tree
+*** DONE added an about box
+*** DONE split the window
+*** DONE added statusbar
+*** DONE added icon
+*** DONE artifacts repository
+<appdir>/data/*.art|artdb # initial data (always present on start; i.e. categories, artifacts used by the app)
+~/.artifact/locations     # text file with data locations
+  ./*.art|artdb
+  ~/.artifact/artifacts/**/*.art|artdb
+-l <location>             # can specify additional location(s) on the command line
+*** DONE create menu
+*** DONE refactored app
+*** DONE create new app
+*** 2012
+**** July
+***** 3
+****** DONE thor file
+***** 9
+****** explorer
+******* DONE start explorer part
+** [[D:\dev\src\2014\08Aug\codebench\data\test.art]]
+--- 
+- name: Projects
+  children:
+  - name: CodeBench
+  - name: Learning Emacs
+  - name: Emacs
+  - name: Ruby
+- name: Generators
+- name: Work
+  children:
+  - code: "\"hello world\""
+  - code: "23"
+  - name: bob_name
+    code: Bob Dobbs
+    test: xyz
+  - name: don't show
+    code: xyz
+    show_code: true
+  - code: <%= 5 + 7 %>
+  - name: Notes
+    children:
+    - doc: a note
+    - name: list
+      children:
+      - name: first
+      - name: second
+      - name: third
+  - name: art with local
+    code: <%= p.test %>
+    params: 
+      test: 23
+    artid: 19
+  - name: test puts
+    code: puts 'abc'
+  - name: out, err, result
+    code: |
+      puts 'out'
+      $stderr.puts 'err'
+      23
+
+  - name: art parent with params
+    params: 
+      test: 23
+    children:
+    - name: art
+      code: <%= p.test %>
+      artid: 23
+  - name: art parameters 1
+    params: 
+      test: 10
+    code_location: 
+    - G:/src/2010/10Oct/codebench/data/test.art
+    - 19
+  - name: art paramters 2
+    params: 
+      test: 100
+    code_location: 
+    - G:/src/2010/10Oct/codebench/data/test.art
+    - 23
+  - name: system dir
+    code: dir
+    context: 
+    - G:/src/2010/10Oct/codebench/data/test.art
+    - 27
+- name: Favs
+- name: Context
+  children:
+  - name: System
+    code: |
+      require 'win32/open3'
+      out = err = ""
+      Open3.popen3( code ) do |stdin, stdout, stderr|
+        out = stdout.read
+        err = stderr.read
+      end
+      { 'out' => out, 'err' => err }
+
+    artid: 27
+
+** notes
+*** possible repository structure
+**** Projects
+***** Learning Emacs (book)
+***** Emacs (code)
+***** Ruby (learning tests and ad-hoc experiments)
+***** EmacsWiki (website)
+***** Tap library (code)
+***** Programming Ruby (book)
+**** Generators (can export constructs or full skeleton apps)
+**** Snippets (don't know if necessary w/ Favorites here also)
+**** Favorites
+**** Categories
+**** Execution Contexts
+**** Notes (not necessarily executable (contains lists, definitions, links?))
+**** Work (temporary artifacts)
+***** art1
+***** art2
+***** art3 (make limit more than 3)(older artifacts are automatically moved into older)
+***** older
+****** art4 (I lied, work artifacts are kept around until deleted)
+*** remember: don't have to split everything into atomic parts
+sometimes in the interest of speed and readability, I can tolerate some
+repetition and non-dry artifacts
+it's just nice to know that I can have things split all the way to the atom
+
+*** formats to execute/generate
+**** ruby
+***** treetop
+***** tap or thor/boson
+***** rake
+***** rails
+**** system/bash/dos
+**** haskell
+**** lisp
+**** c/c++
+**** mozart/oz
+**** forth
+**** prolog
+**** sql
+**** others
+**** emacs
+**** nsis
+**** codeworker
+**** processing
+**** alloy
+**** xvcl
+*** experiments
+**** make an artifact(s) that mimics www.rubular.com
+**** artifact to show database data
 * videos
 ** [[https://youtu.be/c52QhiXsmyI][REBL]]
 * notes
@@ -506,4 +1051,43 @@ outputs
 *** show system info (configuration)
 ** artifact versioning
 * todo
+** TODO first function (name?)
 ** DONE make artifact structure in clojure
+structure is map
+** DONE project for clojure
+** DONE get org-mode working
+*** things I did
+**** fix error in process sentinel: nrepl-server-sentinel: Could not start nREPL server
+upgraded cider-nrepl
+.lein/profiles.clj:
+{:user
+  {
+  :java-cmd "C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath\\java.exe"
+  :plugins [
+      [cider/cider-nrepl "0.21.2-SNAPSHOT"]
+    ]
+   }
+ }
+
+**** fix error in process filter: Wrong type argument: char-or-string-p
+cause is stale elcs
+M-: (byte-recompile-directory "c:/Users/gstanley/AppData/Roaming/.emacs.d/elpa" nil 'force)
+**** fix Unable to resolve symbol: -main in this context
+***** works under lein repl
+***** have to (ns ...) under nrepl in emacs
+**** run org code block
+***** open project.clj
+***** cider-jack-in
+***** open file in project dir with code block
+***** C-c C-c the block
+** 
+*** clojure for the brave and true (notes in artifacts)
+*** programming clojure (notes in artifacts)
+*** text adventure
+*** textpipe artifacts
+*** run atari program from artifact
+**** atari basic artifact
+*** sicp note artifacts
+*** hyperpolyglot artifacts
+*** port xiki to clojure/artifacts
+*** how to design programs notes with artifacts
